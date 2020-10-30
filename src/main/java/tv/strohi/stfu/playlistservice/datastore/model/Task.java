@@ -1,6 +1,7 @@
 package tv.strohi.stfu.playlistservice.datastore.model;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 
 @Entity
@@ -19,7 +20,10 @@ public class Task {
     private String playlistId;
     private String playlistTitle;
 
-    private Date taskDate;
+    private Date taskDate = Date.from(Instant.now().plusSeconds(1 * 60));
+
+    private boolean successful = false;
+    private int attemptCount = 0;
 
     public Task() {
     }
@@ -97,5 +101,25 @@ public class Task {
 
     public void setTaskDate(Date taskDate) {
         this.taskDate = taskDate;
+    }
+
+    public boolean isSuccessful() {
+        return successful;
+    }
+
+    public void setSuccessful(boolean successful) {
+        this.successful = successful;
+    }
+
+    public int getAttemptCount() {
+        return attemptCount;
+    }
+
+    public void setAttemptCount(int tryCount) {
+        this.attemptCount = tryCount;
+    }
+
+    public void increaseAttempts() {
+        this.attemptCount++;
     }
 }

@@ -1,5 +1,7 @@
 package tv.strohi.stfu.playlistservice.datastore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,8 +12,11 @@ public class Client {
     private long id;
 
     private String clientKey;
+    @JsonIgnore
     private String clientSecret;
+    @JsonIgnore
     private String accessToken;
+    @JsonIgnore
     private String refreshToken;
 
     public Client() {
