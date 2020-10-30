@@ -5,8 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import tv.strohi.stfu.playlistservice.data.model.Client;
-import tv.strohi.stfu.playlistservice.data.repository.ClientRepository;
+import tv.strohi.stfu.playlistservice.datastore.model.Client;
+import tv.strohi.stfu.playlistservice.datastore.repository.ClientRepository;
 
 import java.util.List;
 

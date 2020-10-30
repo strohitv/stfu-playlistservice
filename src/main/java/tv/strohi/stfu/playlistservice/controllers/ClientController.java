@@ -2,8 +2,8 @@ package tv.strohi.stfu.playlistservice.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import tv.strohi.stfu.playlistservice.data.model.Client;
-import tv.strohi.stfu.playlistservice.data.repository.ClientRepository;
+import tv.strohi.stfu.playlistservice.datastore.model.Client;
+import tv.strohi.stfu.playlistservice.datastore.repository.ClientRepository;
 
 import java.util.stream.StreamSupport;
 

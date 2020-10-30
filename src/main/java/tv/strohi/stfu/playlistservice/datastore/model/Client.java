@@ -1,4 +1,4 @@
-package tv.strohi.stfu.playlistservice.data.model;
+package tv.strohi.stfu.playlistservice.datastore.model;
 
 import javax.persistence.*;
 
