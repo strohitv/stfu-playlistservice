@@ -3,6 +3,7 @@ package tv.strohi.stfu.playlistservice.datastore.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "clients")
@@ -18,23 +19,31 @@ public class Client {
     private String accessToken;
     @JsonIgnore
     private String refreshToken;
+    @JsonIgnore
+    private String tokenType;
+    @JsonIgnore
+    private Date expirationDate;
 
     public Client() {
     }
 
-    public Client(String clientKey, String clientSecret, String accessToken, String refreshToken) {
+    public Client(String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
         this.clientKey = clientKey;
         this.clientSecret = clientSecret;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.tokenType = tokenType;
+        this.expirationDate = expirationDate;
     }
 
-    public Client(long id, String clientKey, String clientSecret, String accessToken, String refreshToken) {
+    public Client(long id, String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
         this.id = id;
         this.clientKey = clientKey;
         this.clientSecret = clientSecret;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.tokenType = tokenType;
+        this.expirationDate = expirationDate;
     }
 
     public long getId() {
@@ -75,5 +84,21 @@ public class Client {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

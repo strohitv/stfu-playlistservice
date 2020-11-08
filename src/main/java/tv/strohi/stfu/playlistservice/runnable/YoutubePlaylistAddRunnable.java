@@ -6,7 +6,6 @@ import tv.strohi.stfu.playlistservice.datastore.model.Task;
 import tv.strohi.stfu.playlistservice.datastore.repository.TaskRepository;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
