@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "clients")
-public class Client {
+@Table(name = "accounts")
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -24,10 +24,10 @@ public class Client {
     @JsonIgnore
     private Date expirationDate;
 
-    public Client() {
+    public Account() {
     }
 
-    public Client(String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
+    public Account(String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
         this.clientKey = clientKey;
         this.clientSecret = clientSecret;
         this.accessToken = accessToken;
@@ -36,7 +36,7 @@ public class Client {
         this.expirationDate = expirationDate;
     }
 
-    public Client(long id, String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
+    public Account(long id, String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
         this.id = id;
         this.clientKey = clientKey;
         this.clientSecret = clientSecret;

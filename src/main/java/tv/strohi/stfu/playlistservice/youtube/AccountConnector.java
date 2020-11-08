@@ -2,8 +2,8 @@ package tv.strohi.stfu.playlistservice.youtube;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import tv.strohi.stfu.playlistservice.datastore.model.AuthCode;
-import tv.strohi.stfu.playlistservice.datastore.model.Client;
-import tv.strohi.stfu.playlistservice.datastore.repository.ClientRepository;
+import tv.strohi.stfu.playlistservice.datastore.model.Account;
+import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.youtube.model.YoutubeAuthResponse;
 
 import java.io.BufferedReader;
@@ -11,32 +11,30 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.Instant;
 
 public class AccountConnector {
-    private ClientRepository clientRepository;
+    private AccountRepository accountRepository;
 
-    public AccountConnector(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public AccountConnector(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
-    public ClientRepository getClientRepository() {
-        return clientRepository;
+    public AccountRepository getAccountRepository() {
+        return accountRepository;
     }
 
-    public void setClientRepository(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public void setAccountRepository(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
-    public Client connectAccount(AuthCode connectInformation) throws IOException {
-        Client newClient = new Client();
-        newClient.setClientKey(connectInformation.getClientId());
-        newClient.setClientSecret(connectInformation.getClientSecret());
+    public Account connectAccount(AuthCode connectInformation) throws IOException {
+        Account newAccount = new Account();
+        newAccount.setClientKey(connectInformation.getClientId());
+        newAccount.setClientSecret(connectInformation.getClientSecret());
 
         String content = String.format(
                 "code=%s&client_id=%s&client_secret=%s&redirect_uri=%s&grant_type=authorization_code",
@@ -70,13 +68,13 @@ public class AccountConnector {
 
             YoutubeAuthResponse response = new ObjectMapper().readValue(sb.toString(), YoutubeAuthResponse.class);
 
-            newClient.setAccessToken(response.access_token);
-            newClient.setRefreshToken(response.refresh_token);
-            newClient.setTokenType(response.token_type);
-            newClient.setExpirationDate(Date.from(Instant.now().plusSeconds(response.expires_in)));
+            newAccount.setAccessToken(response.access_token);
+            newAccount.setRefreshToken(response.refresh_token);
+            newAccount.setTokenType(response.token_type);
+            newAccount.setExpirationDate(Date.from(Instant.now().plusSeconds(response.expires_in)));
 
-            clientRepository.save(newClient);
-            return newClient;
+            accountRepository.save(newAccount);
+            return newAccount;
         } else {
             System.out.println(connection.getResponseMessage());
         }

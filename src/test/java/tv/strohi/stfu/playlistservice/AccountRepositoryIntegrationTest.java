@@ -5,8 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import tv.strohi.stfu.playlistservice.datastore.model.Client;
-import tv.strohi.stfu.playlistservice.datastore.repository.ClientRepository;
+import tv.strohi.stfu.playlistservice.datastore.model.Account;
+import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class ClientRepositoryIntegrationTest {
+public class AccountRepositoryIntegrationTest {
     @Autowired
-    private ClientRepository clientRepository;
+    private AccountRepository accountRepository;
 
     @Test
-    public void TestClientRepositoryExists() {
-        clientRepository.save(new Client());
-        List<Client> users = (List<Client>) clientRepository.findAll();
+    public void TestAccountRepositoryExists() {
+        accountRepository.save(new Account());
+        List<Account> users = (List<Account>) accountRepository.findAll();
 
         assertEquals(users.size(), 1);
     }

@@ -12,8 +12,8 @@ public class Task {
     private long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private Client client;
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 
     private String videoId;
     private String videoTitle;
@@ -28,8 +28,8 @@ public class Task {
     public Task() {
     }
 
-    public Task(Client client, String videoId, String videoTitle, String playlistId, String playlistTitle, Date taskDate) {
-        this.client = client;
+    public Task(Account account, String videoId, String videoTitle, String playlistId, String playlistTitle, Date taskDate) {
+        this.account = account;
         this.videoId = videoId;
         this.videoTitle = videoTitle;
         this.playlistId = playlistId;
@@ -37,9 +37,9 @@ public class Task {
         this.taskDate = taskDate;
     }
 
-    public Task(long id, Client client, String videoId, String videoTitle, String playlistId, String playlistTitle, Date taskDate) {
+    public Task(long id, Account account, String videoId, String videoTitle, String playlistId, String playlistTitle, Date taskDate) {
         this.id = id;
-        this.client = client;
+        this.account = account;
         this.videoId = videoId;
         this.videoTitle = videoTitle;
         this.playlistId = playlistId;
@@ -55,12 +55,12 @@ public class Task {
         this.id = id;
     }
 
-    public Client getClient() {
-        return client;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public String getVideoId() {
