@@ -17,17 +17,9 @@ import java.sql.Date;
 import java.time.Instant;
 
 public class AccountConnector {
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     public AccountConnector(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
-
-    public AccountRepository getAccountRepository() {
-        return accountRepository;
-    }
-
-    public void setAccountRepository(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 

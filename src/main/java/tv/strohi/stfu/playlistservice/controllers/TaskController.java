@@ -1,7 +1,6 @@
 package tv.strohi.stfu.playlistservice.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.bind.annotation.*;
 import tv.strohi.stfu.playlistservice.datastore.model.Account;
 import tv.strohi.stfu.playlistservice.datastore.model.Task;
@@ -16,8 +15,6 @@ import java.util.List;
 public class TaskController {
     private TaskRepository taskRepo;
     private AccountRepository accountRepo;
-
-    private TaskScheduler scheduler;
 
     @Autowired
     public void setTaskRepository(TaskRepository repo) {

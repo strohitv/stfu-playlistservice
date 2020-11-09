@@ -20,7 +20,7 @@ public class Task {
     private String playlistId;
     private String playlistTitle;
 
-    private Date taskDate = Date.from(Instant.now().plusSeconds(1 * 60));
+    private Date addAt = Date.from(Instant.now().plusSeconds(10));
 
     private boolean successful = false;
     private int attemptCount = 0;
@@ -28,23 +28,23 @@ public class Task {
     public Task() {
     }
 
-    public Task(Account account, String videoId, String videoTitle, String playlistId, String playlistTitle, Date taskDate) {
+    public Task(Account account, String videoId, String videoTitle, String playlistId, String playlistTitle, Date addAt) {
         this.account = account;
         this.videoId = videoId;
         this.videoTitle = videoTitle;
         this.playlistId = playlistId;
         this.playlistTitle = playlistTitle;
-        this.taskDate = taskDate;
+        this.addAt = addAt;
     }
 
-    public Task(long id, Account account, String videoId, String videoTitle, String playlistId, String playlistTitle, Date taskDate) {
+    public Task(long id, Account account, String videoId, String videoTitle, String playlistId, String playlistTitle, Date addAt) {
         this.id = id;
         this.account = account;
         this.videoId = videoId;
         this.videoTitle = videoTitle;
         this.playlistId = playlistId;
         this.playlistTitle = playlistTitle;
-        this.taskDate = taskDate;
+        this.addAt = addAt;
     }
 
     public long getId() {
@@ -95,12 +95,12 @@ public class Task {
         this.playlistTitle = playlistTitle;
     }
 
-    public Date getTaskDate() {
-        return taskDate;
+    public Date getAddAt() {
+        return addAt;
     }
 
-    public void setTaskDate(Date taskDate) {
-        this.taskDate = taskDate;
+    public void setAddAt(Date taskDate) {
+        this.addAt = taskDate;
     }
 
     public boolean isSuccessful() {
