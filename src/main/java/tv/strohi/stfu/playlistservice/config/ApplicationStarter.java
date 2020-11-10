@@ -14,7 +14,7 @@ import java.util.List;
 import static tv.strohi.stfu.playlistservice.runnable.YoutubePlaylistAddRunnable.scheduleTask;
 
 @Component
-public class StartupApplicationListenerExample implements ApplicationListener<ContextRefreshedEvent> {
+public class ApplicationStarter implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private TaskRepository taskRepository;
 

@@ -12,6 +12,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @JsonIgnore
     private String clientKey;
     @JsonIgnore
     private String clientSecret;
