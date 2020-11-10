@@ -37,7 +37,7 @@ public class TaskController {
 
         if (account != null) {
             task.setAccount(account);
-            YoutubePlaylistAddRunnable.scheduleTask(task, taskRepo);
+            YoutubePlaylistAddRunnable.scheduleTask(task, taskRepo, accountRepo);
             taskRepo.save(task);
         }
 

@@ -1,20 +1,19 @@
 package tv.strohi.stfu.playlistservice.youtube;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import tv.strohi.stfu.playlistservice.datastore.model.AuthCode;
 import tv.strohi.stfu.playlistservice.datastore.model.Account;
+import tv.strohi.stfu.playlistservice.datastore.model.AuthCode;
 import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.youtube.model.YoutubeAuthResponse;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.Instant;
+
+import static tv.strohi.stfu.playlistservice.youtube.utils.Utils.readResult;
 
 public class AccountConnector {
     private final AccountRepository accountRepository;
@@ -35,7 +34,21 @@ public class AccountConnector {
                 connectInformation.getClientSecret(),
                 connectInformation.getRedirectUri()
         );
+        getAccessToken(newAccount, content);
 
+        return newAccount.getAccessToken() != null ? newAccount : null;
+    }
+
+    public Account withValidAccessToken(Account account) throws IOException {
+        if (account.getExpirationDate().toInstant().isBefore(Instant.now().minusSeconds(60))) {
+            String content = String.format("client_id=%s&client_secret=%s&refresh_token=%s&grant_type=refresh_token", account.getClientKey(), account.getClientSecret(), account.getRefreshToken());
+            getAccessToken(account, content);
+        }
+
+        return account;
+    }
+
+    private void getAccessToken(Account account, String content) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL("https://www.googleapis.com/oauth2/v4/token").openConnection();
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
@@ -47,30 +60,19 @@ public class AccountConnector {
         wr.write(content);
         wr.flush();
 
-        StringBuilder sb = new StringBuilder();
         int HttpResult = connection.getResponseCode();
         if (HttpResult == HttpURLConnection.HTTP_OK) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-            br.close();
-            System.out.println("" + sb.toString());
+            String result = readResult(connection);
+            YoutubeAuthResponse response = new ObjectMapper().readValue(result, YoutubeAuthResponse.class);
 
-            YoutubeAuthResponse response = new ObjectMapper().readValue(sb.toString(), YoutubeAuthResponse.class);
+            account.setAccessToken(response.access_token);
+            account.setRefreshToken(response.refresh_token);
+            account.setTokenType(response.token_type);
+            account.setExpirationDate(Date.from(Instant.now().plusSeconds(response.expires_in)));
 
-            newAccount.setAccessToken(response.access_token);
-            newAccount.setRefreshToken(response.refresh_token);
-            newAccount.setTokenType(response.token_type);
-            newAccount.setExpirationDate(Date.from(Instant.now().plusSeconds(response.expires_in)));
-
-            accountRepository.save(newAccount);
-            return newAccount;
+            accountRepository.save(account);
         } else {
             System.out.println(connection.getResponseMessage());
         }
-
-        return null;
     }
 }
