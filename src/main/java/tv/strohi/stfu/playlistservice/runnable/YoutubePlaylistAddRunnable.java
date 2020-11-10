@@ -41,7 +41,11 @@ public class YoutubePlaylistAddRunnable implements Runnable {
         try {
             // don't execute deleted or already done / failed tasks
             task = taskRepo.findById(task.getId()).orElse(null);
-            if (task == null || task.getState() != TaskState.Open) return;
+            if (task == null || task.getState() != TaskState.Open || task.getAddAt().toInstant().isAfter(Instant.now())) return;
+            if (task.getAccount() == null) {
+                taskRepo.delete(task);
+                return;
+            }
 
             task.increaseAttempts();
 

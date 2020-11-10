@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tasks")
+@Cacheable(false)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
