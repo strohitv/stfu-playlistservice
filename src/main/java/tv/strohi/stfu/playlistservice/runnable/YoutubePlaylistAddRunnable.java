@@ -21,7 +21,7 @@ public class YoutubePlaylistAddRunnable implements Runnable {
     private final TaskRepository taskRepo;
     private final AccountRepository accountRepo;
 
-    private final Task task;
+    private Task task;
 
     public YoutubePlaylistAddRunnable(Task task, TaskRepository taskRepo, AccountRepository accountRepo) {
         this.task = task;
@@ -39,6 +39,10 @@ public class YoutubePlaylistAddRunnable implements Runnable {
     @Override
     public void run() {
         try {
+            // don't execute deleted or already done / failed tasks
+            task = taskRepo.findById(task.getId()).orElse(null);
+            if (task == null || task.getState() != TaskState.Open) return;
+
             task.increaseAttempts();
 
             YoutubeVideoResponse response = Arrays.stream(new VideoInformationLoader(accountRepo).loadVideoFromYoutube(task).getItems()).findFirst().orElse(null);
