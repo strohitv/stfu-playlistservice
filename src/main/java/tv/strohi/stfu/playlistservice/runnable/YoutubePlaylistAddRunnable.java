@@ -3,6 +3,7 @@ package tv.strohi.stfu.playlistservice.runnable;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import tv.strohi.stfu.playlistservice.datastore.model.Task;
+import tv.strohi.stfu.playlistservice.datastore.model.TaskState;
 import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.datastore.repository.TaskRepository;
 import tv.strohi.stfu.playlistservice.youtube.PlaylistAdder;
@@ -45,7 +46,13 @@ public class YoutubePlaylistAddRunnable implements Runnable {
                 if (!response.getStatus().getPrivacyStatus().equalsIgnoreCase("private") || response.getStatus().getPublishAt().toInstant().isBefore(Instant.now())) {
                     // Video can be added
                     if (new PlaylistAdder(accountRepo).addVideoToPlaylist(task)) {
-                        task.setSuccessful(true);
+                        task.setState(TaskState.Done);
+                    } else if (task.getAttemptCount() <= 12) {
+                        task.setAddAt(Date.from(Instant.now().plusSeconds(300)));
+                        scheduleTask(task, taskRepo, accountRepo);
+                    } else {
+                        // too many attempts -> won't work
+                        task.setState(TaskState.Failed);
                     }
                 } else {
                     // Video is scheduled for an later date
@@ -54,10 +61,11 @@ public class YoutubePlaylistAddRunnable implements Runnable {
                 }
             } else {
                 // no video found -> do nothing
+                task.setState(TaskState.Failed);
             }
         } catch (IOException e) {
             // do nothing
-            System.out.println(e);
+            task.setState(TaskState.Failed);
         }
 
         taskRepo.save(task);

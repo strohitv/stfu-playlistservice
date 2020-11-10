@@ -11,7 +11,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
@@ -22,7 +22,10 @@ public class Task {
 
     private Date addAt = Date.from(Instant.now().plusSeconds(10));
 
-    private boolean successful = false;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private TaskState state = TaskState.Open;
+
     private int attemptCount = 0;
 
     public Task() {
@@ -103,12 +106,12 @@ public class Task {
         this.addAt = taskDate;
     }
 
-    public boolean isSuccessful() {
-        return successful;
+    public TaskState getState() {
+        return state;
     }
 
-    public void setSuccessful(boolean successful) {
-        this.successful = successful;
+    public void setState(TaskState state) {
+        this.state = state;
     }
 
     public int getAttemptCount() {
