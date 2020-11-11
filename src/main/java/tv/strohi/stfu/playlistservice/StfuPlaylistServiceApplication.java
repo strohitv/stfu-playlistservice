@@ -55,7 +55,7 @@ public class StfuPlaylistServiceApplication {
                             settings.setUser((String) prop.getValue());
                             break;
                         case "password":
-                            settings.setPass((String) prop.getValue());
+                            settings.setPassword((String) prop.getValue());
                             break;
                         case "checkAtStartup":
                             settings.setCheckForUpdatesAtStartup(Boolean.parseBoolean((String) prop.getValue()));
@@ -81,7 +81,7 @@ public class StfuPlaylistServiceApplication {
             Properties properties = new Properties();
             properties.setProperty("port", Short.toString(settings.getPort()));
             properties.setProperty("user", settings.getUser());
-            properties.setProperty("password", settings.getPass());
+            properties.setProperty("password", settings.getPassword());
             properties.setProperty("checkAtStartup", Boolean.toString(settings.isCheckForUpdatesAtStartup()));
             properties.setProperty("checkEach24h", Boolean.toString(settings.isCheckForUpdatesEach24h()));
             properties.setProperty("downloadPreviewUpdates", Boolean.toString(settings.isCheckForPreviewUpdates()));

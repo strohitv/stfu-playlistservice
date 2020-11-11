@@ -3,7 +3,7 @@ package tv.strohi.stfu.playlistservice.config;
 public class ServiceSettings {
     private short port = 10800;
     private String user = "";
-    private String pass = "";
+    private String password = "";
     private boolean checkForUpdatesAtStartup = true;
     private boolean checkForUpdatesEach24h = true;
     private boolean checkForPreviewUpdates = false;
@@ -28,12 +28,12 @@ public class ServiceSettings {
         this.user = user;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isCheckForUpdatesAtStartup() {
