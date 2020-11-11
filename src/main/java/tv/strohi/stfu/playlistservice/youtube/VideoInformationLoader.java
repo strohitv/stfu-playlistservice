@@ -18,21 +18,33 @@ public class VideoInformationLoader {
         this.repository = repository;
     }
 
-    public YoutubeArrayResponse loadVideoFromYoutube(Task task) throws IOException {
+    public YoutubeArrayResponse loadVideoFromYoutube(Task task) {
+        return executeGetRequest(task, String.format("https://www.googleapis.com/youtube/v3/videos?part=snippet&part=status&id=%s", task.getVideoId()));
+    }
+
+    public YoutubeArrayResponse loadPlaylistFromYoutube(Task task) {
+        return executeGetRequest(task, String.format("https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=%s", task.getPlaylistId()));
+    }
+
+    private YoutubeArrayResponse executeGetRequest(Task task, String url) {
         YoutubeArrayResponse response = null;
 
-        HttpURLConnection connection = (HttpURLConnection) new URL(String.format("https://www.googleapis.com/youtube/v3/videos?part=status&id=%s", task.getVideoId())).openConnection();
-        connection.setRequestMethod("GET");
-        connection.setDoInput(true);
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Authorization", String.format("Bearer %s", new AccountConnector(repository).withValidAccessToken(task.getAccount()).getAccessToken()));
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Authorization", String.format("Bearer %s", new AccountConnector(repository).withValidAccessToken(task.getAccount()).getAccessToken()));
 
-        int HttpResult = connection.getResponseCode();
-        if (HttpResult == HttpURLConnection.HTTP_OK) {
-            String result = readResult(connection);
-            response = new ObjectMapper().readValue(result, YoutubeArrayResponse.class);
-        } else {
-            System.out.println(connection.getResponseMessage());
+            int HttpResult = connection.getResponseCode();
+            if (HttpResult == HttpURLConnection.HTTP_OK) {
+                String result = readResult(connection);
+                response = new ObjectMapper().readValue(result, YoutubeArrayResponse.class);
+            } else {
+                System.out.println(connection.getResponseMessage());
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
 
         return response;

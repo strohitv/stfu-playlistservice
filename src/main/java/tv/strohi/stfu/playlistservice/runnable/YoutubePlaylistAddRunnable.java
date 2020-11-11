@@ -49,9 +49,15 @@ public class YoutubePlaylistAddRunnable implements Runnable {
 
             task.increaseAttempts();
 
-            YoutubeItem response = Arrays.stream(new VideoInformationLoader(accountRepo).loadVideoFromYoutube(task).getItems()).findFirst().orElse(null);
-            if (response != null) {
-                if (!response.getStatus().getPrivacyStatus().equalsIgnoreCase("private") || response.getStatus().getPublishAt().toInstant().isBefore(Instant.now())) {
+            VideoInformationLoader loader = new VideoInformationLoader(accountRepo);
+            YoutubeItem video = Arrays.stream(loader.loadVideoFromYoutube(task).getItems()).findFirst().orElse(null);
+            YoutubeItem playlist = Arrays.stream(loader.loadPlaylistFromYoutube(task).getItems()).findFirst().orElse(null);
+
+            if (video != null && playlist != null) {
+                task.setVideoTitle(video.getSnippet().getTitle());
+                task.setPlaylistTitle(playlist.getSnippet().getTitle());
+
+                if (!video.getStatus().getPrivacyStatus().equalsIgnoreCase("private") || video.getStatus().getPublishAt().toInstant().isBefore(Instant.now())) {
                     // Video can be added
                     if (new PlaylistAdder(accountRepo).addVideoToPlaylist(task)) {
                         task.setState(TaskState.Done);
@@ -64,7 +70,7 @@ public class YoutubePlaylistAddRunnable implements Runnable {
                     }
                 } else {
                     // Video is scheduled for an later date
-                    task.setAddAt(Date.from(response.getStatus().getPublishAt().toInstant().plusSeconds(10)));
+                    task.setAddAt(Date.from(video.getStatus().getPublishAt().toInstant().plusSeconds(10)));
                     scheduleTask(task, taskRepo, accountRepo);
                 }
             } else {
