@@ -8,7 +8,7 @@ import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.datastore.repository.TaskRepository;
 import tv.strohi.stfu.playlistservice.youtube.PlaylistAdder;
 import tv.strohi.stfu.playlistservice.youtube.VideoInformationLoader;
-import tv.strohi.stfu.playlistservice.youtube.model.YoutubeVideoResponse;
+import tv.strohi.stfu.playlistservice.youtube.model.YoutubeItem;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -49,7 +49,7 @@ public class YoutubePlaylistAddRunnable implements Runnable {
 
             task.increaseAttempts();
 
-            YoutubeVideoResponse response = Arrays.stream(new VideoInformationLoader(accountRepo).loadVideoFromYoutube(task).getItems()).findFirst().orElse(null);
+            YoutubeItem response = Arrays.stream(new VideoInformationLoader(accountRepo).loadVideoFromYoutube(task).getItems()).findFirst().orElse(null);
             if (response != null) {
                 if (!response.getStatus().getPrivacyStatus().equalsIgnoreCase("private") || response.getStatus().getPublishAt().toInstant().isBefore(Instant.now())) {
                     // Video can be added

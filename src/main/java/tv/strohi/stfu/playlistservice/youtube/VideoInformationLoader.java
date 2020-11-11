@@ -3,7 +3,7 @@ package tv.strohi.stfu.playlistservice.youtube;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import tv.strohi.stfu.playlistservice.datastore.model.Task;
 import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
-import tv.strohi.stfu.playlistservice.youtube.model.YoutubeVideoArrayResponse;
+import tv.strohi.stfu.playlistservice.youtube.model.YoutubeArrayResponse;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -18,8 +18,8 @@ public class VideoInformationLoader {
         this.repository = repository;
     }
 
-    public YoutubeVideoArrayResponse loadVideoFromYoutube(Task task) throws IOException {
-        YoutubeVideoArrayResponse response = null;
+    public YoutubeArrayResponse loadVideoFromYoutube(Task task) throws IOException {
+        YoutubeArrayResponse response = null;
 
         HttpURLConnection connection = (HttpURLConnection) new URL(String.format("https://www.googleapis.com/youtube/v3/videos?part=status&id=%s", task.getVideoId())).openConnection();
         connection.setRequestMethod("GET");
@@ -30,7 +30,7 @@ public class VideoInformationLoader {
         int HttpResult = connection.getResponseCode();
         if (HttpResult == HttpURLConnection.HTTP_OK) {
             String result = readResult(connection);
-            response = new ObjectMapper().readValue(result, YoutubeVideoArrayResponse.class);
+            response = new ObjectMapper().readValue(result, YoutubeArrayResponse.class);
         } else {
             System.out.println(connection.getResponseMessage());
         }
