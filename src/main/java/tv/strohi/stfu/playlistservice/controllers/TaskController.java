@@ -10,6 +10,8 @@ import tv.strohi.stfu.playlistservice.datastore.model.TaskState;
 import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.datastore.repository.TaskRepository;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 
 import static tv.strohi.stfu.playlistservice.runnable.YoutubePlaylistAddRunnable.scheduleTask;
@@ -49,8 +51,14 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
 
         if (account != null) {
             task.setAccount(account);
-            scheduleTask(task, taskRepo, accountRepo);
+
+            if (task.getAddAt().toInstant().isBefore(Instant.now().plusSeconds(10))) {
+                task.setAddAt(Date.from(Instant.now().plusSeconds(10)));
+            }
+
             taskRepo.save(task);
+
+            scheduleTask(task, taskRepo, accountRepo);
         }
 
         return task;

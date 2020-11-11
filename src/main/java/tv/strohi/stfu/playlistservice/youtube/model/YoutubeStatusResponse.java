@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class YoutubeVideoStatusResponse {
+public class YoutubeStatusResponse {
     private String uploadStatus;
     private String failureReason;
     private String rejectionReason;
@@ -17,10 +17,10 @@ public class YoutubeVideoStatusResponse {
     private boolean madeForKids;
     private boolean selfDeclaredMadeForKids;
 
-    public YoutubeVideoStatusResponse() {
+    public YoutubeStatusResponse() {
     }
 
-    public YoutubeVideoStatusResponse(String uploadStatus, String failureReason, String rejectionReason, String privacyStatus, Date publishAt, String license, boolean embeddable, boolean publicStatsViewable, boolean madeForKids, boolean selfDeclaredMadeForKids) {
+    public YoutubeStatusResponse(String uploadStatus, String failureReason, String rejectionReason, String privacyStatus, Date publishAt, String license, boolean embeddable, boolean publicStatsViewable, boolean madeForKids, boolean selfDeclaredMadeForKids) {
         this.uploadStatus = uploadStatus;
         this.failureReason = failureReason;
         this.rejectionReason = rejectionReason;

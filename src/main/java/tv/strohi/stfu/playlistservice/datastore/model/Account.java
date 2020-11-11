@@ -13,32 +13,43 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String title;
+
+    private String channelId;
+
     @JsonIgnore
     private String clientKey;
+
     @JsonIgnore
     private String clientSecret;
+
     @JsonIgnore
     private String accessToken;
+
     @JsonIgnore
     private String refreshToken;
+
     @JsonIgnore
     private String tokenType;
+
     @JsonIgnore
     private Date expirationDate;
 
     public Account() {
     }
 
-    public Account(String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
+    public Account(String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate, String title, String channelId) {
         this.clientKey = clientKey;
         this.clientSecret = clientSecret;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.tokenType = tokenType;
         this.expirationDate = expirationDate;
+        this.title = title;
+        this.channelId = channelId;
     }
 
-    public Account(long id, String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate) {
+    public Account(long id, String clientKey, String clientSecret, String accessToken, String refreshToken, String tokenType, Date expirationDate, String title, String channelId) {
         this.id = id;
         this.clientKey = clientKey;
         this.clientSecret = clientSecret;
@@ -46,6 +57,8 @@ public class Account {
         this.refreshToken = refreshToken;
         this.tokenType = tokenType;
         this.expirationDate = expirationDate;
+        this.title = title;
+        this.channelId = channelId;
     }
 
     public long getId() {
@@ -54,6 +67,22 @@ public class Account {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     public String getClientKey() {

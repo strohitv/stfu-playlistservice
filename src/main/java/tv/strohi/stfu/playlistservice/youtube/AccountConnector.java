@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import tv.strohi.stfu.playlistservice.datastore.model.Account;
 import tv.strohi.stfu.playlistservice.datastore.model.AuthCode;
 import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
+import tv.strohi.stfu.playlistservice.youtube.model.YoutubeArrayResponse;
 import tv.strohi.stfu.playlistservice.youtube.model.YoutubeAuthResponse;
 
 import java.io.IOException;
@@ -70,7 +71,30 @@ public class AccountConnector {
             account.setTokenType(response.token_type);
             account.setExpirationDate(Date.from(Instant.now().plusSeconds(response.expires_in)));
 
+            loadAccountDetails(account);
+
             accountRepository.save(account);
+        } else {
+            System.out.println(connection.getResponseMessage());
+        }
+    }
+
+    private void loadAccountDetails(Account account) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL("https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&key={YoutubeClientData.YoutubeApiKey}").openConnection();
+        connection.setRequestMethod("GET");
+        connection.setDoInput(true);
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestProperty("Authorization", String.format("Bearer %s", withValidAccessToken(account).getAccessToken()));
+
+        int HttpResult = connection.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            String result = readResult(connection);
+            YoutubeArrayResponse response = new ObjectMapper().readValue(result, YoutubeArrayResponse.class);
+
+            if (response.getItems().length > 0) {
+                account.setTitle(response.getItems()[0].getSnippet().getTitle());
+                account.setChannelId(response.getItems()[0].getId());
+            }
         } else {
             System.out.println(connection.getResponseMessage());
         }
