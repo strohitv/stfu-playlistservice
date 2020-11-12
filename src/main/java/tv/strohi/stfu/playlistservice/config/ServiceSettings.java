@@ -1,5 +1,7 @@
 package tv.strohi.stfu.playlistservice.config;
 
+import org.apache.logging.log4j.Level;
+
 public class ServiceSettings {
     private short port = 10800;
     private String user = "";
@@ -7,7 +9,7 @@ public class ServiceSettings {
     private boolean checkForUpdatesAtStartup = true;
     private boolean checkForUpdatesEach24h = true;
     private boolean checkForPreviewUpdates = false;
-    private String loglevel = "INFO";
+    private Level loglevel = Level.INFO;
 
     public ServiceSettings() {
     }
@@ -60,11 +62,11 @@ public class ServiceSettings {
         this.checkForPreviewUpdates = checkForPreviewUpdates;
     }
 
-    public String getLoglevel() {
+    public Level getLoglevel() {
         return loglevel;
     }
 
-    public void setLoglevel(String loglevel) {
+    public void setLoglevel(Level loglevel) {
         this.loglevel = loglevel;
     }
 }
