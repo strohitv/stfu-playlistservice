@@ -20,6 +20,7 @@ public class StfuPlaylistServiceApplication {
         logger.info("service is starting...");
         // load service properties
         new SettingsLoader(configFilename).loadSettings(settings);
+        logger.info("service properties: {}", settings);
 
         if (settings.checkForUpdatesAtStartup()) {
             // later: check for updates and install if needed

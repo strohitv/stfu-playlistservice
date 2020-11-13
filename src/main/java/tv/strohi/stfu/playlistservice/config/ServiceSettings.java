@@ -69,4 +69,17 @@ public class ServiceSettings {
     public void setLoglevel(Level loglevel) {
         this.loglevel = loglevel;
     }
+
+    @Override
+    public String toString() {
+        return "ServiceSettings {" +
+                "port=" + port +
+                ", user='" + user + '\'' +
+                ", password='" + password + '\'' +
+                ", checkForUpdatesAtStartup=" + checkForUpdatesAtStartup +
+                ", checkForUpdatesEach24h=" + checkForUpdatesEach24h +
+                ", downloadPreviewUpdates=" + downloadPreviewUpdates +
+                ", loglevel=" + loglevel +
+                '}';
+    }
 }
