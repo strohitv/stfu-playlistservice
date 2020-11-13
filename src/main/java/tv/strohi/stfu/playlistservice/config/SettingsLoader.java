@@ -70,7 +70,7 @@ public class SettingsLoader {
                                 settings.setCheckForUpdatesAtStartup(checkAtStartup);
                                 logger.info("should the service check for updates at startup: '{}'", checkAtStartup);
                             } catch (Exception ex) {
-                                logger.error("check for updates at startup property could not be set to '{}'. falling back to default setting: '{}'", prop.getValue(), settings.isCheckForUpdatesAtStartup());
+                                logger.error("check for updates at startup property could not be set to '{}'. falling back to default setting: '{}'", prop.getValue(), settings.checkForUpdatesAtStartup());
                             }
                             break;
                         case "checkEach24h":
@@ -80,17 +80,17 @@ public class SettingsLoader {
                                 settings.setCheckForUpdatesEach24h(checkEach24h);
                                 logger.info("should the service check for updates each 24 hours: '{}'", checkEach24h);
                             } catch (Exception ex) {
-                                logger.error("check for updates each 24 hours property could not be set to '{}'. falling back to default setting: '{}'", prop.getValue(), settings.isCheckForUpdatesEach24h());
+                                logger.error("check for updates each 24 hours property could not be set to '{}'. falling back to default setting: '{}'", prop.getValue(), settings.checkForUpdatesEach24h());
                             }
                             break;
                         case "downloadPreviewUpdates":
-                            settings.setCheckForPreviewUpdates(Boolean.parseBoolean((String) prop.getValue()));
+                            settings.setDownloadPreviewUpdates(Boolean.parseBoolean((String) prop.getValue()));
                             try {
                                 boolean downloadPreviewUpdates = Boolean.parseBoolean((String)prop.getValue());
-                                settings.setCheckForPreviewUpdates(downloadPreviewUpdates);
+                                settings.setDownloadPreviewUpdates(downloadPreviewUpdates);
                                 logger.info("should the service also download preview updates: '{}'", downloadPreviewUpdates);
                             } catch (Exception ex) {
-                                logger.error("download preview updates property could not be set to '{}'. falling back to default setting: '{}'", prop.getValue(), settings.isCheckForPreviewUpdates());
+                                logger.error("download preview updates property could not be set to '{}'. falling back to default setting: '{}'", prop.getValue(), settings.downloadPreviewUpdates());
                             }
                             break;
                         case "loglevel":
@@ -119,9 +119,9 @@ public class SettingsLoader {
             properties.setProperty("port", Short.toString(settings.getPort()));
             properties.setProperty("user", settings.getUser());
             properties.setProperty("password", settings.getPassword());
-            properties.setProperty("checkAtStartup", Boolean.toString(settings.isCheckForUpdatesAtStartup()));
-            properties.setProperty("checkEach24h", Boolean.toString(settings.isCheckForUpdatesEach24h()));
-            properties.setProperty("downloadPreviewUpdates", Boolean.toString(settings.isCheckForPreviewUpdates()));
+            properties.setProperty("checkAtStartup", Boolean.toString(settings.checkForUpdatesAtStartup()));
+            properties.setProperty("checkEach24h", Boolean.toString(settings.checkForUpdatesEach24h()));
+            properties.setProperty("downloadPreviewUpdates", Boolean.toString(settings.downloadPreviewUpdates()));
             properties.setProperty("loglevel", settings.getLoglevel().toString());
 
             try {

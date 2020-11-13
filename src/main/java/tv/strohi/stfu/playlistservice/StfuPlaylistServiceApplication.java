@@ -21,7 +21,7 @@ public class StfuPlaylistServiceApplication {
         // load service properties
         new SettingsLoader(configFilename).loadSettings(settings);
 
-        if (settings.isCheckForUpdatesAtStartup()) {
+        if (settings.checkForUpdatesAtStartup()) {
             // later: check for updates and install if needed
             logger.info("checking for updates... [TODO!]");
         }

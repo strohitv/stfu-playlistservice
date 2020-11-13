@@ -8,7 +8,7 @@ public class ServiceSettings {
     private String password = "";
     private boolean checkForUpdatesAtStartup = true;
     private boolean checkForUpdatesEach24h = true;
-    private boolean checkForPreviewUpdates = false;
+    private boolean downloadPreviewUpdates = false;
     private Level loglevel = Level.INFO;
 
     public ServiceSettings() {
@@ -38,7 +38,7 @@ public class ServiceSettings {
         this.password = password;
     }
 
-    public boolean isCheckForUpdatesAtStartup() {
+    public boolean checkForUpdatesAtStartup() {
         return checkForUpdatesAtStartup;
     }
 
@@ -46,7 +46,7 @@ public class ServiceSettings {
         this.checkForUpdatesAtStartup = checkForUpdatesAtStartup;
     }
 
-    public boolean isCheckForUpdatesEach24h() {
+    public boolean checkForUpdatesEach24h() {
         return checkForUpdatesEach24h;
     }
 
@@ -54,12 +54,12 @@ public class ServiceSettings {
         this.checkForUpdatesEach24h = checkForUpdatesEach24h;
     }
 
-    public boolean isCheckForPreviewUpdates() {
-        return checkForPreviewUpdates;
+    public boolean downloadPreviewUpdates() {
+        return downloadPreviewUpdates;
     }
 
-    public void setCheckForPreviewUpdates(boolean checkForPreviewUpdates) {
-        this.checkForPreviewUpdates = checkForPreviewUpdates;
+    public void setDownloadPreviewUpdates(boolean downloadPreviewUpdates) {
+        this.downloadPreviewUpdates = downloadPreviewUpdates;
     }
 
     public Level getLoglevel() {
