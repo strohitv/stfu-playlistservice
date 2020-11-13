@@ -90,9 +90,12 @@ public class AccountConnector {
             logger.debug("response: {}", response);
 
             account.setAccessToken(response.access_token);
-            account.setRefreshToken(response.refresh_token);
             account.setTokenType(response.token_type);
             account.setExpirationDate(Date.from(Instant.now().plusSeconds(response.expires_in)));
+
+            if (response.refresh_token != null) {
+                account.setRefreshToken(response.refresh_token);
+            }
 
             loadAccountDetails(account);
 
