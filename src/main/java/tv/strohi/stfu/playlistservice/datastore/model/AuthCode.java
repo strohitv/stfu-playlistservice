@@ -47,4 +47,13 @@ public class AuthCode {
     public void setRedirectUri(String redirectUri) {
         this.redirectUri = redirectUri;
     }
+
+    @Override
+    public String toString() {
+        return "AuthCode {" +
+                "code='" + code + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", redirectUri='" + redirectUri + '\'' +
+                '}';
+    }
 }

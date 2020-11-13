@@ -132,4 +132,18 @@ public class Account {
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
     }
+
+    @Override
+    public String toString() {
+        return "Account {" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", channelId='" + channelId + '\'' +
+                ", clientKey='" + clientKey + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", tokenType='" + tokenType + '\'' +
+                ", expirationDate=" + expirationDate +
+                '}';
+    }
 }

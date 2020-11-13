@@ -32,6 +32,7 @@ public class SettingsLoader {
             try {
                 properties.load(input);
                 input.close();
+                logger.info("properties were loaded successfully");
 
                 for (Map.Entry<Object, Object> prop : properties.entrySet()) {
                     String key = (String) prop.getKey();
@@ -106,7 +107,9 @@ public class SettingsLoader {
                     }
                 }
             } catch (IOException e) {
-                System.err.println(e.getMessage());
+                logger.error("could not load properties, starting the service with the default properties...");
+                logger.error("exception: " + e.getMessage());
+                logger.error(e);
             }
         } else {
             // Beispielproperties schreiben
@@ -122,10 +125,14 @@ public class SettingsLoader {
             properties.setProperty("loglevel", settings.getLoglevel().toString());
 
             try {
-                properties.store(new FileWriter(Paths.get(getJarLocation(), configFilename).toString()), "");
+                properties.store(new FileWriter(Paths.get(getJarLocation(), configFilename).toString()), "Configure these settings the way you like and restart the playlist service afterwards.");
             } catch (IOException | URISyntaxException e) {
-                System.err.println(e.getMessage());
+                logger.error("could not store default properties file");
+                logger.error("exception: " + e.getMessage());
+                logger.error(e);
             }
+
+            logger.info("did not find properties, starting the service with the default properties...");
         }
 
         logger.info("finished settings loading");
