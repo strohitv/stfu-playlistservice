@@ -41,7 +41,8 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
         if (!settings.getUser().isBlank() && !settings.getPassword().isBlank()) {
             logger.info("setting up username and password auth");
-            http.authorizeRequests()
+            http.csrf().disable()
+                    .authorizeRequests()
 
                     .antMatchers("/swagger-ui")
                     .permitAll()
@@ -56,7 +57,8 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                     .httpBasic();
         } else {
             logger.info("setting up permit all");
-            http.authorizeRequests()
+            http.csrf().disable()
+                    .authorizeRequests()
                     .anyRequest()
                     .permitAll();
         }
