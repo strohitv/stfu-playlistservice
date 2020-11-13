@@ -93,13 +93,22 @@ public class SettingsLoader {
                                 logger.error("download preview updates property could not be set to '{}'. falling back to default setting: '{}'", prop.getValue(), settings.downloadPreviewUpdates());
                             }
                             break;
-                        case "loglevel":
+                        case "loglevelRoot":
                             try {
                                 Level level = Level.valueOf((String)prop.getValue());
-                                settings.setLoglevel(level);
-                                logger.info("set application log level to '{}'", level);
+                                settings.setLoglevelRoot(level);
+                                logger.info("set application root log level to '{}'", level);
                             } catch (Exception ex) {
-                                logger.error("application log level '{}' could not be set. falling back to default log level '{}'", prop.getValue(), settings.getLoglevel());
+                                logger.error("application root log level '{}' could not be set. falling back to default root log level '{}'", prop.getValue(), settings.getLoglevelRoot());
+                            }
+                            break;
+                        case "loglevelService":
+                            try {
+                                Level level = Level.valueOf((String)prop.getValue());
+                                settings.setLoglevelService(level);
+                                logger.info("set application service log level to '{}'", level);
+                            } catch (Exception ex) {
+                                logger.error("application service log level '{}' could not be set. falling back to default service log level '{}'", prop.getValue(), settings.getLoglevelService());
                             }
                             break;
                         default:
@@ -122,7 +131,8 @@ public class SettingsLoader {
             properties.setProperty("checkAtStartup", Boolean.toString(settings.checkForUpdatesAtStartup()));
             properties.setProperty("checkEach24h", Boolean.toString(settings.checkForUpdatesEach24h()));
             properties.setProperty("downloadPreviewUpdates", Boolean.toString(settings.downloadPreviewUpdates()));
-            properties.setProperty("loglevel", settings.getLoglevel().toString());
+            properties.setProperty("loglevelRoot", settings.getLoglevelRoot().toString());
+            properties.setProperty("loglevelService", settings.getLoglevelService().toString());
 
             try {
                 properties.store(new FileWriter(Paths.get(getJarLocation(), configFilename).toString()), "Configure these settings the way you like and restart the playlist service afterwards.");

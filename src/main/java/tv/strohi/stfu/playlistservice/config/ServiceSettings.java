@@ -9,7 +9,8 @@ public class ServiceSettings {
     private boolean checkForUpdatesAtStartup = true;
     private boolean checkForUpdatesEach24h = true;
     private boolean downloadPreviewUpdates = false;
-    private Level loglevel = Level.INFO;
+    private Level loglevelRoot = Level.INFO;
+    private Level loglevelService = Level.INFO;
 
     public ServiceSettings() {
     }
@@ -62,12 +63,20 @@ public class ServiceSettings {
         this.downloadPreviewUpdates = downloadPreviewUpdates;
     }
 
-    public Level getLoglevel() {
-        return loglevel;
+    public Level getLoglevelRoot() {
+        return loglevelRoot;
     }
 
-    public void setLoglevel(Level loglevel) {
-        this.loglevel = loglevel;
+    public void setLoglevelRoot(Level loglevelRoot) {
+        this.loglevelRoot = loglevelRoot;
+    }
+
+    public Level getLoglevelService() {
+        return loglevelService;
+    }
+
+    public void setLoglevelService(Level loglevelService) {
+        this.loglevelService = loglevelService;
     }
 
     @Override
@@ -79,7 +88,8 @@ public class ServiceSettings {
                 ", checkForUpdatesAtStartup=" + checkForUpdatesAtStartup +
                 ", checkForUpdatesEach24h=" + checkForUpdatesEach24h +
                 ", downloadPreviewUpdates=" + downloadPreviewUpdates +
-                ", loglevel=" + loglevel +
+                ", loglevelRoot=" + loglevelRoot +
+                ", loglevelService=" + loglevelService +
                 '}';
     }
 }

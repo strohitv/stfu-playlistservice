@@ -33,7 +33,8 @@ public class StfuPlaylistServiceApplication {
 
         Properties properties = new Properties();
         properties.put("server.port", settings.getPort());
-        properties.put("logging.level.root", settings.getLoglevel().toString());
+        properties.put("logging.level.root", settings.getLoglevelRoot().toString());
+        properties.put("logging.level.tv.strohi.stfu", settings.getLoglevelService().toString());
         app.setDefaultProperties(properties);
 
         app.run(args);
