@@ -126,4 +126,19 @@ public class Task {
     public void increaseAttempts() {
         this.attemptCount++;
     }
+
+    @Override
+    public String toString() {
+        return "Task {" +
+                "id=" + id +
+                ", accountId=" + (account != null ? account.getId() : "[NULL]") +
+                ", videoId='" + videoId + '\'' +
+                ", videoTitle='" + videoTitle + '\'' +
+                ", playlistId='" + playlistId + '\'' +
+                ", playlistTitle='" + playlistTitle + '\'' +
+                ", addAt=" + addAt +
+                ", state=" + state +
+                ", attemptCount=" + attemptCount +
+                '}';
+    }
 }

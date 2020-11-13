@@ -27,7 +27,7 @@ public class AccountController {
 
     @GetMapping
     public Account[] getAllAccounts() {
-        logger.info("get all accounts was called.");
+        logger.info("get all accounts was called");
         Account[] accounts = StreamSupport.stream(accountRepository.findAll().spliterator(), false).toArray(Account[]::new);
         logger.info("returning {} accounts", accounts.length);
         Arrays.stream(accounts).forEach(a -> logger.debug("returning account {}", a));
@@ -36,7 +36,7 @@ public class AccountController {
 
     @GetMapping("{id}")
     public Account getAccount(@PathVariable("id") long id) {
-        logger.info("get account with id {} was called.", id);
+        logger.info("get account with id {} was called", id);
         Account account = accountRepository.findById(id).orElse(null);
         logger.info("does this account exist? answer: {}", account != null);
         logger.debug("returning account {}", account);
@@ -45,21 +45,21 @@ public class AccountController {
 
     @PostMapping
     public Account addAccount(@RequestBody AuthCode connectInformation) throws IOException {
-        logger.info("create account was called.");
+        logger.info("create account was called");
         logger.debug("connect infomation: {}", connectInformation.toString());
         return new AccountConnector(accountRepository).connectAccount(connectInformation);
     }
 
     @DeleteMapping
     public String removeAllAccounts() {
-        logger.info("remove all accounts was called.");
+        logger.info("remove all accounts was called");
         accountRepository.deleteAll();
         return "Alle Accounts wurden gelöscht.";
     }
 
     @DeleteMapping("{id}")
     public String removeAccount(@PathVariable("id") long id) {
-        logger.info("remove account with id {} was called.", id);
+        logger.info("remove account with id {} was called", id);
         accountRepository.deleteById(id);
         return String.format("Account wurde gelöscht. %s Elemente befinden sich im Repo.", StreamSupport.stream(accountRepository.findAll().spliterator(), false).count());
     }
