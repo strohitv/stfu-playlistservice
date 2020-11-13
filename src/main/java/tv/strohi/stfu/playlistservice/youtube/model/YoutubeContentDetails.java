@@ -30,4 +30,12 @@ public class YoutubeContentDetails {
     public void setVideoPublishedAt(String videoPublishedAt) {
         this.videoPublishedAt = videoPublishedAt;
     }
+
+    @Override
+    public String toString() {
+        return "YoutubeContentDetails {" +
+                "videoId='" + videoId + '\'' +
+                ", videoPublishedAt='" + videoPublishedAt + '\'' +
+                '}';
+    }
 }

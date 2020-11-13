@@ -61,4 +61,15 @@ public class YoutubeAuthResponse
     public void setScope(String scope) {
         this.scope = scope;
     }
+
+    @Override
+    public String toString() {
+        return "YoutubeAuthResponse {" +
+                "access_token='" + access_token + '\'' +
+                ", token_type='" + token_type + '\'' +
+                ", expires_in=" + expires_in +
+                ", refresh_token='" + refresh_token + '\'' +
+                ", scope='" + scope + '\'' +
+                '}';
+    }
 }

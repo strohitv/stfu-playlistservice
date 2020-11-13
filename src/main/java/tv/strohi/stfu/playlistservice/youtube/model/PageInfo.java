@@ -30,4 +30,12 @@ public class PageInfo {
     public void setResultsPerPage(int resultsPerPage) {
         this.resultsPerPage = resultsPerPage;
     }
+
+    @Override
+    public String toString() {
+        return "PageInfo {" +
+                "totalResult=" + totalResult +
+                ", resultsPerPage=" + resultsPerPage +
+                '}';
+    }
 }

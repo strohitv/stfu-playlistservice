@@ -112,4 +112,20 @@ public class YoutubeStatusResponse {
     public void setSelfDeclaredMadeForKids(boolean selfDeclaredMadeForKids) {
         this.selfDeclaredMadeForKids = selfDeclaredMadeForKids;
     }
+
+    @Override
+    public String toString() {
+        return "YoutubeStatusResponse {" +
+                "uploadStatus='" + uploadStatus + '\'' +
+                ", failureReason='" + failureReason + '\'' +
+                ", rejectionReason='" + rejectionReason + '\'' +
+                ", privacyStatus='" + privacyStatus + '\'' +
+                ", publishAt=" + publishAt +
+                ", license='" + license + '\'' +
+                ", embeddable=" + embeddable +
+                ", publicStatsViewable=" + publicStatsViewable +
+                ", madeForKids=" + madeForKids +
+                ", selfDeclaredMadeForKids=" + selfDeclaredMadeForKids +
+                '}';
+    }
 }
