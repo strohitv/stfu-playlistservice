@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.Date;
 
+import static tv.strohi.stfu.playlistservice.utils.EmtyOrNull.nullOrWhitespace;
+
 @Entity
 @Table(name = "accounts")
 @Cacheable(false)
@@ -140,6 +142,7 @@ public class Account {
                 ", title='" + title + '\'' +
                 ", channelId='" + channelId + '\'' +
                 ", clientKey='" + clientKey + '\'' +
+                ", clientSecret='" + (nullOrWhitespace(clientSecret) ? "[NULL/EMPTY/WHITESPACE]" : "[HIDDEN]") + '\'' +
                 ", accessToken='" + accessToken + '\'' +
                 ", refreshToken='" + refreshToken + '\'' +
                 ", tokenType='" + tokenType + '\'' +
