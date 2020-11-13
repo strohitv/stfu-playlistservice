@@ -1,6 +1,7 @@
 derby.log
 data/
 examples.txt
+logs/
 
 HELP.md
 target/

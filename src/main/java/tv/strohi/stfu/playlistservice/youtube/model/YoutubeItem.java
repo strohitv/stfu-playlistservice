@@ -70,4 +70,16 @@ public class YoutubeItem {
     public void setStatus(YoutubeStatusResponse status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "YoutubeItem {" +
+                "kind='" + kind + '\'' +
+                ", etag='" + etag + '\'' +
+                ", id='" + id + '\'' +
+                ", contentDetails=" + contentDetails +
+                ", snippet=" + snippet +
+                ", status=" + status +
+                '}';
+    }
 }

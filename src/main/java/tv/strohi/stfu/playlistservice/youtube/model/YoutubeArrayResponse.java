@@ -2,6 +2,8 @@ package tv.strohi.stfu.playlistservice.youtube.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Arrays;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class YoutubeArrayResponse {
     private String kind;
@@ -69,5 +71,17 @@ public class YoutubeArrayResponse {
 
     public void setItems(YoutubeItem[] items) {
         this.items = items;
+    }
+
+    @Override
+    public String toString() {
+        return "YoutubeArrayResponse {" +
+                "kind='" + kind + '\'' +
+                ", etag='" + etag + '\'' +
+                ", prevPageToken='" + prevPageToken + '\'' +
+                ", nextPageToken='" + nextPageToken + '\'' +
+                ", pageInfo=" + pageInfo +
+                ", items=" + Arrays.toString(items) +
+                '}';
     }
 }

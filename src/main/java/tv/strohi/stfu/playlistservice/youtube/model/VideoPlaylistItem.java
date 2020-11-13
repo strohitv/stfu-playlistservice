@@ -22,6 +22,13 @@ public class VideoPlaylistItem {
         this.snippet = snippet;
     }
 
+    @Override
+    public String toString() {
+        return "VideoPlaylistItem {" +
+                "snippet=" + snippet +
+                '}';
+    }
+
     public static class PlaylistSnippet {
        private String playlistId;
        private VideoResource resourceId;
@@ -48,6 +55,14 @@ public class VideoPlaylistItem {
 
         public void setResourceId(VideoResource resourceId) {
             this.resourceId = resourceId;
+        }
+
+        @Override
+        public String toString() {
+            return "PlaylistSnippet {" +
+                    "playlistId='" + playlistId + '\'' +
+                    ", resourceId=" + resourceId +
+                    '}';
         }
     }
 
@@ -76,6 +91,14 @@ public class VideoPlaylistItem {
 
         public void setVideoId(String videoId) {
             this.videoId = videoId;
+        }
+
+        @Override
+        public String toString() {
+            return "VideoResource {" +
+                    "kind='" + kind + '\'' +
+                    ", videoId='" + videoId + '\'' +
+                    '}';
         }
     }
 }

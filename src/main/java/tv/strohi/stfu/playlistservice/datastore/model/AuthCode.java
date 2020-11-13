@@ -1,5 +1,7 @@
 package tv.strohi.stfu.playlistservice.datastore.model;
 
+import static tv.strohi.stfu.playlistservice.utils.EmtyOrNull.nullOrWhitespace;
+
 public class AuthCode {
     private String code;
     private String clientId;
@@ -46,5 +48,15 @@ public class AuthCode {
 
     public void setRedirectUri(String redirectUri) {
         this.redirectUri = redirectUri;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthCode {" +
+                "code='" + code + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", clientSecret='" + (nullOrWhitespace(clientSecret) ? "[NULL/EMPTY/WHITESPACE]" : "[HIDDEN]") + '\'' +
+                ", redirectUri='" + redirectUri + '\'' +
+                '}';
     }
 }

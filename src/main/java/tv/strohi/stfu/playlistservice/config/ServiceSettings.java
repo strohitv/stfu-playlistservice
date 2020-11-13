@@ -1,13 +1,16 @@
 package tv.strohi.stfu.playlistservice.config;
 
+import org.apache.logging.log4j.Level;
+
 public class ServiceSettings {
     private short port = 10800;
     private String user = "";
     private String password = "";
     private boolean checkForUpdatesAtStartup = true;
     private boolean checkForUpdatesEach24h = true;
-    private boolean checkForPreviewUpdates = false;
-    private String loglevel = "INFO";
+    private boolean downloadPreviewUpdates = false;
+    private Level loglevelRoot = Level.INFO;
+    private Level loglevelService = Level.INFO;
 
     public ServiceSettings() {
     }
@@ -36,7 +39,7 @@ public class ServiceSettings {
         this.password = password;
     }
 
-    public boolean isCheckForUpdatesAtStartup() {
+    public boolean checkForUpdatesAtStartup() {
         return checkForUpdatesAtStartup;
     }
 
@@ -44,7 +47,7 @@ public class ServiceSettings {
         this.checkForUpdatesAtStartup = checkForUpdatesAtStartup;
     }
 
-    public boolean isCheckForUpdatesEach24h() {
+    public boolean checkForUpdatesEach24h() {
         return checkForUpdatesEach24h;
     }
 
@@ -52,19 +55,41 @@ public class ServiceSettings {
         this.checkForUpdatesEach24h = checkForUpdatesEach24h;
     }
 
-    public boolean isCheckForPreviewUpdates() {
-        return checkForPreviewUpdates;
+    public boolean downloadPreviewUpdates() {
+        return downloadPreviewUpdates;
     }
 
-    public void setCheckForPreviewUpdates(boolean checkForPreviewUpdates) {
-        this.checkForPreviewUpdates = checkForPreviewUpdates;
+    public void setDownloadPreviewUpdates(boolean downloadPreviewUpdates) {
+        this.downloadPreviewUpdates = downloadPreviewUpdates;
     }
 
-    public String getLoglevel() {
-        return loglevel;
+    public Level getLoglevelRoot() {
+        return loglevelRoot;
     }
 
-    public void setLoglevel(String loglevel) {
-        this.loglevel = loglevel;
+    public void setLoglevelRoot(Level loglevelRoot) {
+        this.loglevelRoot = loglevelRoot;
+    }
+
+    public Level getLoglevelService() {
+        return loglevelService;
+    }
+
+    public void setLoglevelService(Level loglevelService) {
+        this.loglevelService = loglevelService;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceSettings {" +
+                "port=" + port +
+                ", user='" + user + '\'' +
+                ", password='" + password + '\'' +
+                ", checkForUpdatesAtStartup=" + checkForUpdatesAtStartup +
+                ", checkForUpdatesEach24h=" + checkForUpdatesEach24h +
+                ", downloadPreviewUpdates=" + downloadPreviewUpdates +
+                ", loglevelRoot=" + loglevelRoot +
+                ", loglevelService=" + loglevelService +
+                '}';
     }
 }

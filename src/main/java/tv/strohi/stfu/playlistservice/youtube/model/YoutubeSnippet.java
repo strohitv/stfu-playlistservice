@@ -123,4 +123,21 @@ public class YoutubeSnippet {
     public void setLocalized(YoutubeLocalization localized) {
         this.localized = localized;
     }
+
+    @Override
+    public String toString() {
+        return "YoutubeSnippet {" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", customUrl='" + customUrl + '\'' +
+                ", publishedAt=" + publishedAt +
+                ", country='" + country + '\'' +
+                ", channelId='" + channelId + '\'' +
+                ", hl='" + hl + '\'' +
+                ", name='" + name + '\'' +
+                ", assignable=" + assignable +
+                ", thumbnails=" + thumbnails +
+                ", localized=" + localized +
+                '}';
+    }
 }
