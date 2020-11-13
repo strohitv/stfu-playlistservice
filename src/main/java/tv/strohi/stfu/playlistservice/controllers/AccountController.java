@@ -10,6 +10,7 @@ import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.youtube.AccountConnector;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.stream.StreamSupport;
 
 @RestController
@@ -29,6 +30,7 @@ public class AccountController {
         logger.info("get all accounts was called.");
         Account[] accounts = StreamSupport.stream(accountRepository.findAll().spliterator(), false).toArray(Account[]::new);
         logger.info("returning {} accounts", accounts.length);
+        Arrays.stream(accounts).forEach(a -> logger.debug("returning account {}", a));
         return accounts;
     }
 
