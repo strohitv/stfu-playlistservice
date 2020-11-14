@@ -1,5 +1,6 @@
 package tv.strohi.stfu.playlistservice.datastore.repository;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -38,6 +39,7 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
             @Param("videoTitle") String videoTitle,
             @Param("playlistId") String playlistId,
             @Param("playlistTitle") String playlistTitle,
-            @Param("state") TaskState state
+            @Param("state") TaskState state,
+            Sort sort
     );
 }
