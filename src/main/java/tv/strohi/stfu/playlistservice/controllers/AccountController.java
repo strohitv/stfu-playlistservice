@@ -26,9 +26,9 @@ public class AccountController {
     }
 
     @GetMapping
-    public Account[] getAllAccounts() {
+    public Account[] getAllAccounts(@RequestParam(value = "channelId", required = false) String channelId, @RequestParam(value = "channelTitle", required = false) String channelTitle) {
         logger.info("get all accounts was called");
-        Account[] accounts = StreamSupport.stream(accountRepository.findAll().spliterator(), false).toArray(Account[]::new);
+        Account[] accounts = accountRepository.findByChannelIdAndTitle(channelId, channelTitle).toArray(Account[]::new);
         logger.info("returning {} accounts", accounts.length);
         Arrays.stream(accounts).forEach(a -> logger.debug("returning account {}", a));
         return accounts;

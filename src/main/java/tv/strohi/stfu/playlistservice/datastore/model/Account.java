@@ -8,7 +8,7 @@ import java.util.Date;
 import static tv.strohi.stfu.playlistservice.utils.EmtyOrNull.nullOrWhitespace;
 
 @Entity
-@Table(name = "accounts")
+@Table
 @Cacheable(false)
 public class Account {
     @Id

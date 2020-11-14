@@ -57,9 +57,21 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
     }
 
     @GetMapping
-    public List<Task> getAllTasks(@PathVariable("id") long id) {
-        logger.info("get all tasks for account id {} was called", id);
-        List<Task> tasks = taskRepo.findByAccount_Id(id);
+    public List<Task> getAllTasks(@PathVariable("id") long accountId,
+                                  @RequestParam(name = "addAt", required = false) Date addAt,
+                                  @RequestParam(name = "addAtBefore", required = false) Date addAtBefore,
+                                  @RequestParam(name = "addAtAfter", required = false) Date addAtAfter,
+                                  @RequestParam(name = "attemptCount", required = false) Integer attemptCount,
+                                  @RequestParam(name = "maxAttemptCount", required = false) Integer maxAttemptCount,
+                                  @RequestParam(name = "minAttemptCount", required = false) Integer minAttemptCount,
+                                  @RequestParam(name = "playlistTitle", required = false) String playlistTitle,
+                                  @RequestParam(name = "playlistId", required = false) String playlistId,
+                                  @RequestParam(name = "videoTitle", required = false) String videoTitle,
+                                  @RequestParam(name = "videoId", required = false) String videoId,
+                                  @RequestParam(name = "state", required = false) TaskState state
+    ) {
+        logger.info("get all tasks for account id {} was called", accountId);
+        List<Task> tasks = taskRepo.findByAccount_IdAndParams(accountId, addAt, addAtBefore, addAtAfter, attemptCount, minAttemptCount, maxAttemptCount, videoId, videoTitle, playlistId, playlistTitle, state);
         logger.info("returning {} tasks", tasks.size());
         tasks.forEach(t -> logger.debug("returning task {}", t));
         return tasks;
