@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import tv.strohi.stfu.playlistservice.datastore.model.Account;
 import tv.strohi.stfu.playlistservice.datastore.model.Task;
@@ -58,9 +59,8 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
 
     @GetMapping
     public List<Task> getAllTasks(@PathVariable("id") long accountId,
-                                  @RequestParam(name = "addAt", required = false) Date addAt,
-                                  @RequestParam(name = "addAtBefore", required = false) Date addAtBefore,
-                                  @RequestParam(name = "addAtAfter", required = false) Date addAtAfter,
+                                  @RequestParam(name = "addAtBefore", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtBefore,
+                                  @RequestParam(name = "addAtAfter", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtAfter,
                                   @RequestParam(name = "attemptCount", required = false) Integer attemptCount,
                                   @RequestParam(name = "maxAttemptCount", required = false) Integer maxAttemptCount,
                                   @RequestParam(name = "minAttemptCount", required = false) Integer minAttemptCount,
@@ -71,7 +71,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
                                   @RequestParam(name = "state", required = false) TaskState state
     ) {
         logger.info("get all tasks for account id {} was called", accountId);
-        List<Task> tasks = taskRepo.findByAccount_IdAndParams(accountId, addAt, addAtBefore, addAtAfter, attemptCount, minAttemptCount, maxAttemptCount, videoId, videoTitle, playlistId, playlistTitle, state);
+        List<Task> tasks = taskRepo.findByAccount_IdAndParams(accountId, addAtBefore, addAtAfter, attemptCount, minAttemptCount, maxAttemptCount, videoId, videoTitle, playlistId, playlistTitle, state);
         logger.info("returning {} tasks", tasks.size());
         tasks.forEach(t -> logger.debug("returning task {}", t));
         return tasks;
@@ -80,6 +80,11 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
     @PostMapping
     public Task addTask(@PathVariable("id") long id, @RequestBody Task task) {
         logger.info("create task for account id {} was called", id);
+
+        if (task == null || task.getAddAt() == null || task.getPlaylistId() == null || task.getVideoId() == null) {
+            return null;
+        }
+
         Account account = accountRepo.findById(id).orElse(null);
         logger.debug("account to add the new task to: {}", account);
 

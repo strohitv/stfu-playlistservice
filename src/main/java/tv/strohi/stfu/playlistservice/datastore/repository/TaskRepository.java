@@ -17,12 +17,11 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 
     @Query("SELECT t FROM Task t WHERE " +
             "t.account.id = :accountId " +
-            "AND (:addAt is null OR t.addAt = :addAt) " +
             "AND (:addAtBefore is null OR t.addAt <= :addAtBefore) " +
             "AND (:addAtAfter is null OR t.addAt >= :addAtAfter) " +
             "AND (:attemptCount is null OR t.attemptCount = :attemptCount) " +
-            "AND (:attemptCountBefore is null OR t.attemptCount <= :attemptCountBefore) " +
-            "AND (:attemptCountAfter is null OR t.attemptCount >= :attemptCountAfter) " +
+            "AND (:minAttemptCount is null OR t.attemptCount >= :minAttemptCount) " +
+            "AND (:maxAttemptCount is null OR t.attemptCount <= :maxAttemptCount) " +
             "AND (:videoId is null OR t.videoId = :videoId) " +
             "AND (:videoTitle is null OR t.videoTitle like %:videoTitle%) " +
             "AND (:playlistId is null OR t.playlistId = :playlistId) " +
@@ -30,12 +29,11 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
             "AND (:state is null OR t.state = :state) ")
     List<Task> findByAccount_IdAndParams(
             @Param("accountId") Long accountId,
-            @Param("addAt") Date addAt,
             @Param("addAtBefore") Date addAtBefore,
             @Param("addAtAfter") Date addAtAfter,
             @Param("attemptCount") Integer attemptCount,
-            @Param("attemptCountBefore") Integer attemptCountBefore,
-            @Param("attemptCountAfter") Integer attemptCountAfter,
+            @Param("minAttemptCount") Integer attemptCountBefore,
+            @Param("maxAttemptCount") Integer attemptCountAfter,
             @Param("videoId") String videoId,
             @Param("videoTitle") String videoTitle,
             @Param("playlistId") String playlistId,
