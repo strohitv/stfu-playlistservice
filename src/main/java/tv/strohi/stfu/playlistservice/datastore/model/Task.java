@@ -1,11 +1,12 @@
 package tv.strohi.stfu.playlistservice.datastore.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.Date;
 
 @Entity
-@Table(name = "tasks")
+@Table
 @Cacheable(false)
 public class Task {
     @Id
@@ -14,13 +15,21 @@ public class Task {
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @NotNull
     private Account account;
 
+    @NotNull
     private String videoId;
-    private String videoTitle;
+
+    @NotNull
     private String playlistId;
+
+    private String videoTitle;
     private String playlistTitle;
 
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "DATETIME")
     private Date addAt = Date.from(Instant.now().plusSeconds(10));
 
     @Enumerated(EnumType.STRING)

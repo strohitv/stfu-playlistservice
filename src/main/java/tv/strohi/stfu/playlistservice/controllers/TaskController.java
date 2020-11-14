@@ -5,16 +5,21 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import tv.strohi.stfu.playlistservice.datastore.model.Account;
 import tv.strohi.stfu.playlistservice.datastore.model.Task;
+import tv.strohi.stfu.playlistservice.datastore.model.TaskOrderField;
 import tv.strohi.stfu.playlistservice.datastore.model.TaskState;
 import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.datastore.repository.TaskRepository;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static tv.strohi.stfu.playlistservice.runnable.YoutubePlaylistAddRunnable.scheduleTask;
 
@@ -57,9 +62,28 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
     }
 
     @GetMapping
-    public List<Task> getAllTasks(@PathVariable("id") long id) {
-        logger.info("get all tasks for account id {} was called", id);
-        List<Task> tasks = taskRepo.findByAccount_Id(id);
+    public List<Task> getAllTasks(@PathVariable("id") long accountId,
+                                  @RequestParam(name = "addAtBefore", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtBefore,
+                                  @RequestParam(name = "addAtAfter", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtAfter,
+                                  @RequestParam(name = "attemptCount", required = false) Integer attemptCount,
+                                  @RequestParam(name = "maxAttemptCount", required = false) Integer maxAttemptCount,
+                                  @RequestParam(name = "minAttemptCount", required = false) Integer minAttemptCount,
+                                  @RequestParam(name = "playlistTitle", required = false) String playlistTitle,
+                                  @RequestParam(name = "playlistId", required = false) String playlistId,
+                                  @RequestParam(name = "videoTitle", required = false) String videoTitle,
+                                  @RequestParam(name = "videoId", required = false) String videoId,
+                                  @RequestParam(name = "state", required = false) TaskState state,
+                                  @RequestParam(name = "orderby", required = false) TaskOrderField[] orderBy,
+                                  @RequestParam(name = "direction", required = false) Sort.Direction direction
+    ) {
+        logger.info("get all tasks for account id {} was called", accountId);
+
+        if (direction == null) direction = Sort.Direction.ASC;
+        if (orderBy == null || orderBy.length == 0) orderBy = new TaskOrderField[]{TaskOrderField.id};
+
+        Sort sort = Sort.by(direction, Arrays.stream(orderBy).filter(Objects::nonNull).map(Enum::name).toArray(String[]::new));
+        List<Task> tasks = taskRepo.findByAccount_IdAndParams(accountId, addAtBefore, addAtAfter, attemptCount, minAttemptCount, maxAttemptCount, videoId, videoTitle, playlistId, playlistTitle, state, sort);
+
         logger.info("returning {} tasks", tasks.size());
         tasks.forEach(t -> logger.debug("returning task {}", t));
         return tasks;
@@ -68,6 +92,11 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
     @PostMapping
     public Task addTask(@PathVariable("id") long id, @RequestBody Task task) {
         logger.info("create task for account id {} was called", id);
+
+        if (task == null || task.getAddAt() == null || task.getPlaylistId() == null || task.getVideoId() == null) {
+            return null;
+        }
+
         Account account = accountRepo.findById(id).orElse(null);
         logger.debug("account to add the new task to: {}", account);
 
