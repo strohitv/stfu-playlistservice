@@ -29,7 +29,6 @@ public class Task {
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(columnDefinition = "DATETIME")
     private Date addAt = Date.from(Instant.now().plusSeconds(10));
 
     @Enumerated(EnumType.STRING)
