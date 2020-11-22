@@ -4,15 +4,16 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tv.strohi.stfu.playlistservice.StfuPlaylistServiceApplication;
+import tv.strohi.stfu.playlistservice.utils.RootPathLoader;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
+
+import static tv.strohi.stfu.playlistservice.utils.RootPathLoader.getRootPath;
 
 public class SettingsLoader {
     private final Logger logger = LogManager.getLogger(StfuPlaylistServiceApplication.class.getCanonicalName());
@@ -135,8 +136,8 @@ public class SettingsLoader {
             properties.setProperty("loglevelService", settings.getLoglevelService().toString());
 
             try {
-                properties.store(new FileWriter(Paths.get(getJarLocation(), configFilename).toString()), "Configure these settings the way you like and restart the playlist service afterwards.");
-            } catch (IOException | URISyntaxException e) {
+                properties.store(new FileWriter(Paths.get(getRootPath(), configFilename).toString()), "Configure these settings the way you like and restart the playlist service afterwards.");
+            } catch (IOException e) {
                 logger.error("could not store default properties file");
                 logger.error("exception: " + e.getMessage());
                 logger.error(e);
@@ -146,9 +147,5 @@ public class SettingsLoader {
         }
 
         logger.info("finished settings loading");
-    }
-
-    private String getJarLocation() throws URISyntaxException {
-        return new File(StfuPlaylistServiceApplication.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
     }
 }

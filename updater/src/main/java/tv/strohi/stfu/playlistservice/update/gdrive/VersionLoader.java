@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import tv.strohi.stfu.playlistservice.update.gdrive.model.GoogleDriveFilesArray;
 import tv.strohi.stfu.playlistservice.update.model.PlaylistServiceVersion;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
 
 import static tv.strohi.stfu.playlistservice.update.gdrive.Utils.readResult;
@@ -34,10 +37,16 @@ public class VersionLoader {
 
             return Arrays.stream(response.getFiles())
                     .filter(f -> !f.getMimeType().equalsIgnoreCase("application/vnd.google-apps.folder"))
-                    .map(f -> new PlaylistServiceVersion(f.getName(), f.getName().toLowerCase().contains("preview"), f.getWebContentLink()))
+                    .map(f -> new PlaylistServiceVersion(f.getName(), f.getName().toUpperCase().contains("SNAPSHOT"), f.getWebContentLink(), PlaylistServiceVersion.getVersionArray(f.getName())))
                     .toArray(PlaylistServiceVersion[]::new);
         } else {
             return new PlaylistServiceVersion[0];
         }
+    }
+
+    public void download(PlaylistServiceVersion version, String targetPath) throws IOException {
+        ReadableByteChannel rbc = Channels.newChannel(version.getDownloadPath().openStream());
+        FileOutputStream fos = new FileOutputStream(targetPath);
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
     }
 }

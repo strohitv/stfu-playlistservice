@@ -70,6 +70,12 @@
         </dependency>
 
         <dependency>
+            <groupId>tv.strohi.stfu.playlistservice</groupId>
+            <artifactId>updater</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.2.32</version>
@@ -116,7 +122,23 @@
                     <outputFileName>api.json</outputFileName>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+
+                            <mainClass>
+                                tv.strohi.stfu.playlistservice.StfuPlaylistServiceApplication
+                            </mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
