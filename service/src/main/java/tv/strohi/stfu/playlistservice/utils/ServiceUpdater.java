@@ -2,10 +2,6 @@ package tv.strohi.stfu.playlistservice.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tv.strohi.stfu.playlistservice.StfuPlaylistServiceApplication;
@@ -17,9 +13,8 @@ import java.io.IOException;
 import static tv.strohi.stfu.playlistservice.utils.RootPathLoader.getRootPath;
 
 @Component
-public class ServiceUpdater implements ApplicationContextAware {
+public class ServiceUpdater {
     private final Logger logger = LogManager.getLogger(ServiceUpdater.class.getCanonicalName());
-    private ApplicationContext context;
 
     public boolean update() {
         logger.info("checking for updates...");
@@ -67,14 +62,9 @@ public class ServiceUpdater implements ApplicationContextAware {
     @Scheduled(cron="0 ${random.int[0,59]} 4 * * ?")
     public void updateScheduled() {
         if (StfuPlaylistServiceApplication.getSettings().checkForUpdatesEach24h()) {
-            if (update() && context != null) {
-                ((ConfigurableApplicationContext) context).close();
+            if (update()) {
+                StfuPlaylistServiceApplication.getContext().close();
             }
         }
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = applicationContext;
     }
 }

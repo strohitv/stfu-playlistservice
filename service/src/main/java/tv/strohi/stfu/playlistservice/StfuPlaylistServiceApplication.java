@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import tv.strohi.stfu.playlistservice.config.ServiceSettings;
 import tv.strohi.stfu.playlistservice.config.SettingsLoader;
 import tv.strohi.stfu.playlistservice.utils.ServiceUpdater;
@@ -17,9 +18,11 @@ public class StfuPlaylistServiceApplication {
 
     private static final ServiceSettings settings = new ServiceSettings();
 
+    private static ConfigurableApplicationContext context = null;
+
     public static void main(String[] args) {
         logger.info("service is starting...");
-        // load service properties
+
         new SettingsLoader(configFilename).loadSettings(settings);
         logger.info("service properties: {}", settings);
 
@@ -28,7 +31,7 @@ public class StfuPlaylistServiceApplication {
         }
 
         logger.info("starting service...");
-        // start service
+
         SpringApplication app = new SpringApplication(StfuPlaylistServiceApplication.class);
 
         Properties properties = new Properties();
@@ -37,11 +40,15 @@ public class StfuPlaylistServiceApplication {
         properties.put("logging.level.tv.strohi.stfu", settings.getLoglevelService().toString());
         app.setDefaultProperties(properties);
 
-        app.run(args);
+        context = app.run(args);
         logger.info("application started successfully");
     }
 
     public static ServiceSettings getSettings() {
         return settings;
+    }
+
+    public static ConfigurableApplicationContext getContext() {
+        return context;
     }
 }
