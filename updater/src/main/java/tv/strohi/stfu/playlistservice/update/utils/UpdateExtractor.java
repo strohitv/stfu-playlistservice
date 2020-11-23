@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -16,10 +19,19 @@ public class UpdateExtractor {
         this.targetDir = new File(targetDir);
     }
 
-    public String extract(Condition condition) {
-        String updaterPath = null;
+    public String extractSingle(Condition condition) {
+        return Arrays.stream(extractAll(condition, 1)).findFirst().orElse(null);
+    }
+
+    public String[] extractAll(Condition condition, int maxCount) {
+        List<String> extracted = new ArrayList<>();
+
+        if (maxCount < 1) {
+            maxCount = Integer.MAX_VALUE;
+        }
 
         try {
+            int count = 0;
             byte[] buffer = new byte[1024];
             ZipInputStream zis = new ZipInputStream(new FileInputStream(zipPath));
             ZipEntry zipEntry = zis.getNextEntry();
@@ -33,8 +45,12 @@ public class UpdateExtractor {
                     }
                     fos.close();
 
-                    updaterPath = newFile.getPath();
-                    break;
+                    extracted.add(newFile.getPath());
+
+                    count ++;
+                    if (count == maxCount) {
+                        break;
+                    }
                 }
 
                 zipEntry = zis.getNextEntry();
@@ -45,7 +61,7 @@ public class UpdateExtractor {
             // nichts tun, geht halt net
         }
 
-        return updaterPath;
+        return extracted.toArray(String[]::new);
     }
 
     public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {

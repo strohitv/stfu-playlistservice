@@ -8,7 +8,6 @@ import tv.strohi.stfu.playlistservice.config.ServiceSettings;
 import tv.strohi.stfu.playlistservice.config.SettingsLoader;
 import tv.strohi.stfu.playlistservice.update.UpdateChecker;
 import tv.strohi.stfu.playlistservice.update.utils.UpdateExtractor;
-import tv.strohi.stfu.playlistservice.utils.RootPathLoader;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -45,7 +44,7 @@ public class StfuPlaylistServiceApplication {
             if (zipPath != null) {
                 // extract updater
                 logger.info("Update found, extracting...");
-                String updaterJar = new UpdateExtractor(zipPath, getRootPath()).extract(c -> c.toLowerCase().contains("updater") && c.toLowerCase().endsWith(".jar"));
+                String updaterJar = new UpdateExtractor(zipPath, getRootPath()).extractSingle(c -> c.toLowerCase().contains("updater") && c.toLowerCase().endsWith(".jar"));
 
                 if (updaterJar != null) {
                     logger.info("Update extracted, starting the updater now...");
