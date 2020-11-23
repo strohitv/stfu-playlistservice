@@ -3,6 +3,7 @@ package tv.strohi.stfu.playlistservice.config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +15,7 @@ import tv.strohi.stfu.playlistservice.StfuPlaylistServiceApplication;
 
 @Configuration
 @EnableWebSecurity
+@EnableScheduling
 public class BasicConfiguration extends WebSecurityConfigurerAdapter {
     private final Logger logger = LogManager.getLogger(BasicConfiguration.class.getCanonicalName());
     ServiceSettings settings = StfuPlaylistServiceApplication.getSettings();
