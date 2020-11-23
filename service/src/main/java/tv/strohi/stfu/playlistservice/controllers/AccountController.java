@@ -15,7 +15,7 @@ import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("accounts")
-public class AccountController {
+public class AccountController implements IAccountController {
     private final Logger logger = LogManager.getLogger(AccountController.class.getCanonicalName());
     private AccountRepository accountRepository;
 
@@ -25,6 +25,7 @@ public class AccountController {
         accountRepository = repo;
     }
 
+    @Override
     @GetMapping
     public Account[] getAllAccounts(@RequestParam(value = "channelId", required = false) String channelId, @RequestParam(value = "channelTitle", required = false) String channelTitle) {
         logger.info("get all accounts was called");
@@ -34,6 +35,7 @@ public class AccountController {
         return accounts;
     }
 
+    @Override
     @GetMapping("{id}")
     public Account getAccount(@PathVariable("id") long id) {
         logger.info("get account with id {} was called", id);
@@ -43,6 +45,7 @@ public class AccountController {
         return account;
     }
 
+    @Override
     @PostMapping
     public Account addAccount(@RequestBody AuthCode connectInformation) throws IOException {
         logger.info("create account was called");
@@ -50,6 +53,7 @@ public class AccountController {
         return new AccountConnector(accountRepository).connectAccount(connectInformation);
     }
 
+    @Override
     @DeleteMapping
     public String removeAllAccounts() {
         logger.info("remove all accounts was called");
@@ -57,6 +61,7 @@ public class AccountController {
         return "Alle Accounts wurden gelöscht.";
     }
 
+    @Override
     @DeleteMapping("{id}")
     public String removeAccount(@PathVariable("id") long id) {
         logger.info("remove account with id {} was called", id);

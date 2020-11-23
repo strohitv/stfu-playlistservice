@@ -25,7 +25,7 @@ import static tv.strohi.stfu.playlistservice.runnable.YoutubePlaylistAddRunnable
 
 @RestController
 @RequestMapping("accounts/{id}/tasks")
-public class TaskController implements ApplicationListener<ContextRefreshedEvent> {
+public class TaskController implements ApplicationListener<ContextRefreshedEvent>, ITaskController {
     private final Logger logger = LogManager.getLogger(TaskController.class.getCanonicalName());
 
     private TaskRepository taskRepo;
@@ -61,6 +61,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
         logger.info("rescheduling done");
     }
 
+    @Override
     @GetMapping
     public List<Task> getAllTasks(@PathVariable("id") long accountId,
                                   @RequestParam(name = "addAtBefore", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtBefore,
@@ -89,6 +90,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
         return tasks;
     }
 
+    @Override
     @PostMapping
     public Task addTask(@PathVariable("id") long id, @RequestBody Task task) {
         logger.info("create task for account id {} was called", id);
@@ -125,6 +127,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
         return task;
     }
 
+    @Override
     @DeleteMapping
     public String deleteAllTasks(@PathVariable("id") long id) {
         logger.info("remove all tasks of account id {} was called", id);
@@ -138,6 +141,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
         return "Joah hat geklappt, alle Tasks für die Id " + id + " sind jetzt weg";
     }
 
+    @Override
     @GetMapping("tid}")
     public Task getTask(@PathVariable("id") long accountId, @PathVariable("tid") long taskId) {
         logger.info("get task with id {} for account id {} was called", taskId, accountId);
@@ -150,6 +154,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
         return task;
     }
 
+    @Override
     @PutMapping("{tid}")
     public Task updateTask(@PathVariable("id") long accountId, @PathVariable("tid") long taskId, @RequestBody Task task) {
         logger.info("update task with id {} for account id {} was called", taskId, accountId);
@@ -179,6 +184,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
         return taskToEdit;
     }
 
+    @Override
     @DeleteMapping("{tid}")
     public String deleteTask(@PathVariable("tid") long taskId) {
         logger.info("remove task with id {} was called", taskId);
