@@ -4,11 +4,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tv.strohi.stfu.playlistservice.StfuPlaylistServiceApplication;
-import tv.strohi.stfu.playlistservice.utils.RootPathLoader;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
@@ -26,7 +23,12 @@ public class SettingsLoader {
     public void loadSettings(ServiceSettings settings) {
         logger.info("load settings");
 
-        InputStream input = StfuPlaylistServiceApplication.class.getResourceAsStream(configFilename);
+        InputStream input = null;
+        try {
+            input = new FileInputStream(Paths.get(getRootPath(), configFilename).toString());
+        } catch (FileNotFoundException e) {
+            // nix tun, ist ja auch egal.
+        }
         if (input != null) {
             logger.info("configuration file was found");
             Properties properties = new Properties();

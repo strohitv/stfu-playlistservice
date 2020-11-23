@@ -7,6 +7,7 @@ import tv.strohi.stfu.playlistservice.update.model.PlaylistServiceVersion;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -37,10 +38,19 @@ public class VersionLoader {
 
             return Arrays.stream(response.getFiles())
                     .filter(f -> !f.getMimeType().equalsIgnoreCase("application/vnd.google-apps.folder"))
-                    .map(f -> new PlaylistServiceVersion(f.getName(), f.getName().toUpperCase().contains("SNAPSHOT"), f.getWebContentLink(), PlaylistServiceVersion.getVersionArray(f.getName())))
+                    .map(f -> new PlaylistServiceVersion(f.getName(), f.getName().toUpperCase().contains("SNAPSHOT"), getDownloadURL(f.getId()), PlaylistServiceVersion.getVersionArray(f.getName())))
                     .toArray(PlaylistServiceVersion[]::new);
         } else {
             return new PlaylistServiceVersion[0];
+        }
+    }
+
+    private URL getDownloadURL(String id) {
+        try {
+            return new URL(String.format("https://www.googleapis.com/drive/v3/files/%s/?key=%s&alt=media", id, apiKey));
+        } catch (MalformedURLException e) {
+            // this will never happen
+            return null;
         }
     }
 

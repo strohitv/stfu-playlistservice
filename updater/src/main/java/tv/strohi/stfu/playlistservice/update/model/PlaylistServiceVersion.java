@@ -64,7 +64,7 @@ public class PlaylistServiceVersion {
     }
 
     public static int[] getVersionArray(String name) {
-        return Arrays.stream(name.split("-"))
+        return Arrays.stream(name.replaceAll("(?i)\\.zip", "").split("-"))
                 .filter(parts -> parts.replaceAll("[0-9.]", "").equals(""))
                 .flatMap(s -> Arrays.stream(s.split("\\.").clone()))
                 .mapToInt(Integer::parseInt)

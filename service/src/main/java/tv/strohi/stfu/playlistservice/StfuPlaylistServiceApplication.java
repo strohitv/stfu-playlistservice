@@ -44,16 +44,17 @@ public class StfuPlaylistServiceApplication {
             if (zipPath != null) {
                 // extract updater
                 logger.info("Update found, extracting...");
-                String updaterJar = new UpdateExtractor(zipPath, getRootPath()).extractSingle(c -> c.toLowerCase().contains("updater") && c.toLowerCase().endsWith(".jar"));
+                String targetDir = getRootPath();
+                String updaterJar = new UpdateExtractor(zipPath, targetDir).extractSingle(c -> c.toLowerCase().contains("updater") && c.toLowerCase().endsWith(".jar"));
 
                 if (updaterJar != null) {
                     logger.info("Update extracted, starting the updater now...");
 
-                    String command = String.format("java -jar \"%s\"", updaterJar);
+                    String command = String.format("java -jar \"%s\" \"%s\" \"%s\" \"%s\"", updaterJar, zipPath, targetDir, "(?i).*service.*\\.jar");
                     logger.info("running command: {}", command);
 
                     try {
-                        ProcessBuilder pb = new ProcessBuilder("java", "-jar", updaterJar);
+                        ProcessBuilder pb = new ProcessBuilder("java", "-jar", updaterJar, zipPath, targetDir, "(?i).*service.*\\.jar");
                         pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                         pb.redirectError(ProcessBuilder.Redirect.INHERIT);
                         pb.start();

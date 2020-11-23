@@ -3,7 +3,8 @@ data/
 examples.txt
 logs/
 **/STFU-*
-**/updater.jar
+**/*.jar
+**/*.zip
 
 HELP.md
 target/

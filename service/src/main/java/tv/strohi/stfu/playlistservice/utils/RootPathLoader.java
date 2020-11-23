@@ -10,14 +10,12 @@ public class RootPathLoader {
 
     public static String getRootPath() {
         try {
-            return Path.of(RootPathLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toAbsolutePath().toString();
+            String path = Path.of(RootPathLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toAbsolutePath().toString();
+            logger.info("using jar file directory: '{}'", path);
+            return path;
         } catch (Exception e) {
             String dir = System.getProperty("user.dir");
-
-            logger.error("could not load location of jar file, will use working dir '{}' instead", dir);
-            logger.error("error message: {}", e.getMessage());
-            logger.error(e);
-
+            logger.info("using working directory: '{}'", dir);
             return dir;
         }
     }
