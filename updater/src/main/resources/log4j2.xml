@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration >
+    <Appenders>
+        <RollingFile name="RollingFile"
+                     fileName="./logs/updater.log"
+                     filePattern="./logs/updater-%d{yyyy-MM-dd}.log"
+                     append="true">
+            <PatternLayout>
+                <pattern>[%d] %-5p %-50.-50c{1} %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete testMode="false" basePath="./logs/">
+                    <IfFileName glob="updater-????-??-??.log"/>
+                    <IfLastModified age="14d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d] %-5p %-50.-50c{1} %m%n" />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    </Loggers>
+</Configuration>
