@@ -45,7 +45,7 @@ public class StfuPlaylistServiceApplication {
             if (zipPath != null) {
                 // extract updater
                 logger.info("Update found, extracting...");
-                String updaterJar = new UpdateExtractor(zipPath, getRootPath()).extract();
+                String updaterJar = new UpdateExtractor(zipPath, getRootPath()).extract(c -> c.toLowerCase().contains("updater") && c.toLowerCase().endsWith(".jar"));
 
                 if (updaterJar != null) {
                     logger.info("Update extracted, starting the updater now...");

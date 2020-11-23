@@ -16,7 +16,7 @@ public class UpdateExtractor {
         this.targetDir = new File(targetDir);
     }
 
-    public String extract() {
+    public String extract(Condition condition) {
         String updaterPath = null;
 
         try {
@@ -24,7 +24,7 @@ public class UpdateExtractor {
             ZipInputStream zis = new ZipInputStream(new FileInputStream(zipPath));
             ZipEntry zipEntry = zis.getNextEntry();
             while (zipEntry != null) {
-                if (zipEntry.getName().equalsIgnoreCase("updater.jar")) {
+                if (condition.applies(zipEntry.getName())) {
                     File newFile = newFile(targetDir, zipEntry);
                     FileOutputStream fos = new FileOutputStream(newFile);
                     int len;
