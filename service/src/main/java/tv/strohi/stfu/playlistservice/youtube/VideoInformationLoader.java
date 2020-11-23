@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static tv.strohi.stfu.playlistservice.youtube.utils.Utils.readResult;
+import static tv.strohi.stfu.playlistservice.update.gdrive.Utils.readResult;
 
 public class VideoInformationLoader {
     private final Logger logger = LogManager.getLogger(VideoInformationLoader.class.getCanonicalName());

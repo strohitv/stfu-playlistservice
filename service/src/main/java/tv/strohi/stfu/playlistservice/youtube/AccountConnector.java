@@ -16,7 +16,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.Instant;
 
-import static tv.strohi.stfu.playlistservice.youtube.utils.Utils.readResult;
+import static tv.strohi.stfu.playlistservice.update.gdrive.Utils.readResult;
 
 public class AccountConnector {
     private final Logger logger = LogManager.getLogger(AccountConnector.class.getCanonicalName());
