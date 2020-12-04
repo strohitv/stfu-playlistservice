@@ -26,6 +26,7 @@ public interface ITaskController {
                     content = @Content)
     })
     List<Task> getAllTasks(@PathVariable("id") @Parameter(description = "id of the account to search for tasks", required = true) long accountId,
+                           @RequestParam(name = "id", required = false) @Parameter(description = "list of ids that should be searched") Long[] taskIds,
                            @RequestParam(name = "addAtBefore", required = false) @Parameter(description = "latest planned date of the tasks to search") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtBefore,
                            @RequestParam(name = "addAtAfter", required = false) @Parameter(description = "earliest planned date of the tasks to search") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtAfter,
                            @RequestParam(name = "attemptCount", required = false) @Parameter(description = "exact count of attempts of the tasks to search") Integer attemptCount,
@@ -35,7 +36,7 @@ public interface ITaskController {
                            @RequestParam(name = "playlistId", required = false) @Parameter(description = "filter tasks which are for a playlist with the given playlist id") String playlistId,
                            @RequestParam(name = "videoTitle", required = false) @Parameter(description = "filter tasks which are for a video with its title containing the given words") String videoTitle,
                            @RequestParam(name = "videoId", required = false) @Parameter(description = "filter tasks which are for a video with the given video id") String videoId,
-                           @RequestParam(name = "state", required = false) @Parameter(description = "filter tasks which have the given state") TaskState state,
+                           @RequestParam(name = "state", required = false) @Parameter(description = "filter tasks which have the given state") TaskState[] state,
                            @RequestParam(name = "orderby", required = false) @Parameter(description = "order returned tasks by the given criteria") TaskOrderField[] orderBy,
                            @RequestParam(name = "direction", required = false) @Parameter(description = "order returned tasks ascending or descending") Sort.Direction direction
     );
