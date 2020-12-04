@@ -101,7 +101,7 @@ public class YoutubePlaylistAddRunnable implements Runnable {
                     task.setAddAt(Date.from(video.getStatus().getPublishAt().toInstant().plusSeconds(10)));
                     scheduleTask(task, taskRepo, accountRepo);
                 }
-            } else if (video != null) {
+            } else if (video == null) {
                 // no video found
                 logger.error("video could not be found -> aborting task");
                 task.setState(TaskState.Failed);
