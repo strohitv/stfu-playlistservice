@@ -79,7 +79,9 @@ public class YoutubePlaylistAddRunnable implements Runnable {
                 task.setVideoTitle(video.getSnippet().getTitle());
                 task.setPlaylistTitle(playlist.getSnippet().getTitle());
 
-                if (!video.getStatus().getPrivacyStatus().equalsIgnoreCase("private") || video.getStatus().getPublishAt().toInstant().isBefore(Instant.now())) {
+                if (!video.getStatus().getPrivacyStatus().equalsIgnoreCase("private")
+                        || video.getStatus().getPublishAt() == null
+                        || video.getStatus().getPublishAt().toInstant().isBefore(Instant.now())) {
                     logger.info("video can be added to playlist");
 
                     // Video can be added
