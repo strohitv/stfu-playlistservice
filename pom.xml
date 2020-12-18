@@ -10,7 +10,7 @@
 
     <groupId>tv.strohi.stfu.playlistservice</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>STFU: Playlist-Service Parent Pom</name>
     <description>Service zum Automatischen Hinzufügen von Videos in eine Playlist zu einem angegebenen Zeitpunkt</description>
 
@@ -18,7 +18,7 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com:strohitv/stfu-playlistservice.git</developerConnection>
-      <tag>first-release</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <modules>
