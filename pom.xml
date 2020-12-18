@@ -17,6 +17,10 @@
 
     <packaging>pom</packaging>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/strohitv/stfu-playlistservice.git</developerConnection>
+    </scm>
+
     <modules>
         <module>service</module>
         <module>updater</module>
