@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import tv.strohi.stfu.playlistservice.datastore.model.Task;
 import tv.strohi.stfu.playlistservice.datastore.model.TaskState;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 
     @Query("SELECT t FROM Task t WHERE " +
             "t.account.id = :accountId " +
+            "AND (:ignoreTaskIds = true OR t.id IN :taskIds) " +
             "AND (:addAtBefore is null OR t.addAt <= :addAtBefore) " +
             "AND (:addAtAfter is null OR t.addAt >= :addAtAfter) " +
             "AND (:attemptCount is null OR t.attemptCount = :attemptCount) " +
@@ -27,9 +29,11 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
             "AND (:videoTitle is null OR t.videoTitle like %:videoTitle%) " +
             "AND (:playlistId is null OR t.playlistId = :playlistId) " +
             "AND (:playlistTitle is null OR t.playlistTitle like %:playlistTitle%) " +
-            "AND (:state is null OR t.state = :state) ")
+            "AND (:ingoreStates = true OR t.state IN :states) ")
     List<Task> findByAccount_IdAndParams(
             @Param("accountId") Long accountId,
+            @Param("taskIds") Collection<Long> taskIds,
+            @Param("ignoreTaskIds") boolean ignoreTasks,
             @Param("addAtBefore") Date addAtBefore,
             @Param("addAtAfter") Date addAtAfter,
             @Param("attemptCount") Integer attemptCount,
@@ -39,7 +43,8 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
             @Param("videoTitle") String videoTitle,
             @Param("playlistId") String playlistId,
             @Param("playlistTitle") String playlistTitle,
-            @Param("state") TaskState state,
+            @Param("states") Collection<TaskState> states,
+            @Param("ingoreStates") boolean ignoreStates,
             Sort sort
     );
 }

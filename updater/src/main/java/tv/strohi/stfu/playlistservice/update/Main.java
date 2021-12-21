@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tv.strohi.stfu.playlistservice.update.utils.UpdateExtractor;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
@@ -35,6 +36,8 @@ public class Main {
                     .filter(f -> Paths.get(f).getFileName().toString().matches(startFileRegex))
                     .findFirst()
                     .orElse(null);
+
+            new File(zipPath).deleteOnExit();
 
             if (fileToStart != null) {
                 ProcessBuilder pb = new ProcessBuilder("java", "-jar", fileToStart);

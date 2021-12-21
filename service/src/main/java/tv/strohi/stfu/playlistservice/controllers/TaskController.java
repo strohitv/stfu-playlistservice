@@ -16,10 +16,8 @@ import tv.strohi.stfu.playlistservice.datastore.repository.AccountRepository;
 import tv.strohi.stfu.playlistservice.datastore.repository.TaskRepository;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static tv.strohi.stfu.playlistservice.runnable.YoutubePlaylistAddRunnable.scheduleTask;
 
@@ -64,6 +62,7 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
     @Override
     @GetMapping
     public List<Task> getAllTasks(@PathVariable("id") long accountId,
+                                  @RequestParam(name = "id", required = false) Long[] taskIds,
                                   @RequestParam(name = "addAtBefore", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtBefore,
                                   @RequestParam(name = "addAtAfter", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date addAtAfter,
                                   @RequestParam(name = "attemptCount", required = false) Integer attemptCount,
@@ -73,17 +72,27 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
                                   @RequestParam(name = "playlistId", required = false) String playlistId,
                                   @RequestParam(name = "videoTitle", required = false) String videoTitle,
                                   @RequestParam(name = "videoId", required = false) String videoId,
-                                  @RequestParam(name = "state", required = false) TaskState state,
+                                  @RequestParam(name = "state", required = false) TaskState[] states,
                                   @RequestParam(name = "orderby", required = false) TaskOrderField[] orderBy,
                                   @RequestParam(name = "direction", required = false) Sort.Direction direction
     ) {
         logger.info("get all tasks for account id {} was called", accountId);
 
+        if (taskIds == null) taskIds = new Long[0];
+        if (states == null) states = new TaskState[0];
         if (direction == null) direction = Sort.Direction.ASC;
         if (orderBy == null || orderBy.length == 0) orderBy = new TaskOrderField[]{TaskOrderField.id};
 
+        boolean skipTaskFilter = taskIds.length == 0;
+        List<Long> tIds = Arrays.stream(taskIds).collect(Collectors.toList());
+        if (skipTaskFilter) tIds.add(-1L);
+
+        boolean skipStateFilter = states.length == 0;
+        List<TaskState> stateFilters = Arrays.stream(states).collect(Collectors.toList());
+        if (skipStateFilter) stateFilters.add(TaskState.Open);
+
         Sort sort = Sort.by(direction, Arrays.stream(orderBy).filter(Objects::nonNull).map(Enum::name).toArray(String[]::new));
-        List<Task> tasks = taskRepo.findByAccount_IdAndParams(accountId, addAtBefore, addAtAfter, attemptCount, minAttemptCount, maxAttemptCount, videoId, videoTitle, playlistId, playlistTitle, state, sort);
+        List<Task> tasks = taskRepo.findByAccount_IdAndParams(accountId, tIds, skipTaskFilter, addAtBefore, addAtAfter, attemptCount, minAttemptCount, maxAttemptCount, videoId, videoTitle, playlistId, playlistTitle, stateFilters, skipStateFilter, sort);
 
         logger.info("returning {} tasks", tasks.size());
         tasks.forEach(t -> logger.debug("returning task {}", t));
@@ -98,6 +107,10 @@ public class TaskController implements ApplicationListener<ContextRefreshedEvent
         if (task == null || task.getAddAt() == null || task.getPlaylistId() == null || task.getVideoId() == null) {
             return null;
         }
+
+        task.setId(0);
+        task.setAttemptCount(0);
+        task.setState(TaskState.Open);
 
         Account account = accountRepo.findById(id).orElse(null);
         logger.debug("account to add the new task to: {}", account);
